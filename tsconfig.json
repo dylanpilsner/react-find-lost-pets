@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "NodeNext",
+    "baseUrl": "./src",
+    "jsx":"react"
+  },
+  "include":["src/**/*.*"]
+}

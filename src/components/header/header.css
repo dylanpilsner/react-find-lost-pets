@@ -1,0 +1,123 @@
+.header{
+  height:90px;
+  background-color:#79927a;
+  display:flex;
+  border-bottom:1px solid black;
+  align-items: center;
+  padding:0 10%;
+  justify-content: space-between;
+}
+
+.logo{
+  height:55px;
+  cursor:pointer;
+}
+
+.open-nav-menu{
+  width:55px;
+  height:55px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+  cursor:pointer;
+}
+
+.hamburger-top-bread {
+  width:100%;
+  height:6px;
+  border-radius:4px;
+  background-color:black;
+}
+.hamburger-top-patty {
+  width:100%;
+  height:6px;
+  border-radius:4px;
+  background-color:black;
+}
+.hamburger-bottom-bread {
+  width:100%;
+  height:6px;
+  border-radius:4px;
+  background-color:black;
+}
+
+.nav-menu {
+  display:flex;
+  position:fixed;
+  height:100%;
+  z-index:1;
+  width:100%;
+  top:-2160px;
+  left:0;
+  bottom:0;
+  background-color:#ADBDD1;
+  flex-direction: column;
+  align-items: center;
+  justify-content:center;
+  gap:20px;
+}
+
+.nav-menu.opened{
+  animation-duration: 0.3s;
+  animation-name: navgetsdown;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.nav-menu.closed{
+  animation-duration: 0.3s;
+  animation-name: navgetsup;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  top:0px;
+}
+
+@keyframes navgetsup{
+  100%{
+    top:-2160px;
+  }
+}
+
+@keyframes navgetsdown{
+  100%{
+    top:0;
+  }
+}
+
+.close-nav-menu{
+  position:absolute;
+  top:4%;
+  right:11%;
+  height:35px;
+  width:35px;
+}
+
+.nav-item {
+  font-size:24px;
+  font-weight:700;
+  cursor:pointer;
+}
+.account-container {
+  margin-top:100px;
+  display:flex;
+  gap:8px;
+}
+
+.user-img{
+  height:20px;
+  align-self:center;
+}
+
+.user {
+  font-size:24px;
+  font-weight:400;
+  text-align:center;
+}
+.sign {
+  font-size:16px;
+  font-weight:500;
+  color: #C6558B;
+  cursor: pointer;
+  text-decoration: underline;
+}
