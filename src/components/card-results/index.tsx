@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import css from "./header.css";
 
 function CardResults() {
+  async function pullNearLostPets() {}
+
   useEffect(() => {
     console.log(1);
   }, []);
