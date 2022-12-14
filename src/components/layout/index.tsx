@@ -8,7 +8,7 @@ function Layout() {
   return (
     <div>
       <Header />
-      <Title>Mascotas perdidas cerca tuyo</Title>
+      <Outlet />
     </div>
   );
 }

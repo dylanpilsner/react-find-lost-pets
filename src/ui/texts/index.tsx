@@ -1,11 +1,12 @@
 import React from "react";
+import css from "./texts.css";
 
 function Title({ children }) {
-  return <h1>{children}</h1>;
+  return <h1 className={css.title}>{children}</h1>;
 }
 
 function Paragraph({ children }) {
-  return <p>{children}</p>;
+  return <p className={css.paragraph}>{children}</p>;
 }
 
-export { Title };
+export { Title, Paragraph };
