@@ -36,3 +36,15 @@
 .invisible-id{
   display:none;
 }
+
+.report-information-link {
+  margin-right:5px;
+  color: #5f83c7;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight:500;
+}
+
+.report-information-link:hover{
+  color:#3E91DD;
+}

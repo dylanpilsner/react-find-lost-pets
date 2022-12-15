@@ -1,9 +1,19 @@
 import { pullNearLostPets } from "../../lib/api";
-import { atom, selector, useRecoilState } from "recoil";
+import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
+import { useEffect } from "react";
+
+function setDefaultLocationState() {
+  const userLocation = JSON.parse(localStorage.getItem("saved-location")!);
+  const defaultUserLocation = userLocation
+    ? userLocation
+    : { geolocation: { lat: 0, lng: 0 } };
+
+  return defaultUserLocation;
+}
 
 const userLocationState = atom({
   key: "userLocation",
-  default: {},
+  default: setDefaultLocationState(),
 });
 
 const resultsState = selector({
@@ -11,23 +21,19 @@ const resultsState = selector({
   get: async ({ get }) => {
     const userLocation = get(userLocationState);
 
-    console.log(userLocation);
+    const nearLostPets = await pullNearLostPets(
+      userLocation.geolocation.lat,
+      userLocation.geolocation.lng
+    );
+
+    return nearLostPets;
   },
 });
 
-export function useUserLocation() {
-  const [userLoc, setUserLoc] = useRecoilState(userLocationState);
-
-  // setUserLoc({
-  //   geolocation: {
-  //     lat,
-  //     lng,
-  //   },
-  // });
-  console.log(userLoc);
-  return 1;
-}
-
 export function useSearchResults() {
-  const [userLoc, setUserLoc] = useRecoilState(userLocationState);
+  const nearLostPets = useRecoilValue(resultsState);
+
+  return nearLostPets;
 }
+
+export { userLocationState };

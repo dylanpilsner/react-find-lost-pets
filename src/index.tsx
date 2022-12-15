@@ -9,7 +9,7 @@ const root = createRoot(rootEl);
 
 root.render(
   <RecoilRoot>
-    <Suspense fallback={null}>
+    <Suspense fallback={<div>Hola</div>}>
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>

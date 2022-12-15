@@ -15,7 +15,6 @@ function Home() {
         conocer tu ubicación.
       </Paragraph>
       <LocationButton>Dar mi ubicación</LocationButton>
-
       <CardResults />
     </div>
   );

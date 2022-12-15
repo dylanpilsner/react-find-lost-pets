@@ -1,25 +1,28 @@
 import React from "react";
 import css from "./buttons.css";
-import { useUserLocation } from "../../components/atoms";
+import { userLocationState } from "../../components/atoms";
+import { useRecoilState } from "recoil";
 
 function LocationButton({ children }) {
-  const userLocation = useUserLocation(1, 2);
-
-  function handleOnClick() {
-    navigator.geolocation.getCurrentPosition((geoposition) => {
-      const lat = geoposition.coords.latitude;
-      const lng = geoposition.coords.longitude;
-    });
-  }
+  const [userLoc, setUserLoc] = useRecoilState(userLocationState);
+  const handleClick = () => {
+    const geolocation = navigator.geolocation.getCurrentPosition(
+      (geoposition) => {
+        const lat = geoposition.coords.latitude;
+        const lng = geoposition.coords.longitude;
+        setUserLoc({ geolocation: { lat, lng } });
+        localStorage.setItem(
+          "saved-location",
+          JSON.stringify({ geolocation: { lat, lng } })
+        );
+      }
+    );
+    console.log(userLoc);
+  };
 
   return (
     <div className={css["button-container"]}>
-      <button
-        className={css["main-button"]}
-        onClick={() => {
-          userLocation;
-        }}
-      >
+      <button className={css["main-button"]} onClick={handleClick}>
         {children}
       </button>
     </div>
