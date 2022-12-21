@@ -28,4 +28,20 @@ function LocationButton({ children }) {
     </div>
   );
 }
-export { LocationButton };
+
+function SendReportButton({ children }) {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log("hola");
+  }
+
+  return (
+    <div className={css["button-container"]}>
+      <button className={css["main-button"]} onClick={handleClick}>
+        {children}
+      </button>
+    </div>
+  );
+}
+
+export { LocationButton, SendReportButton };

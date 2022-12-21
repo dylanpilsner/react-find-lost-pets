@@ -1,0 +1,25 @@
+.form-label {
+  width:80%
+}
+.field-label {
+  font-size:16px;
+  font-weight:500;
+}
+.form-input {
+  height:50px;
+  width:100%;
+  border:2px solid black;
+  border-radius:4px;
+  font-family:Poppins;
+  font-size:16px;
+}
+.form-textarea {
+  font-family:Poppins;
+  font-size:16px;
+  height:127px;
+  width:100%;
+  border:2px solid black;
+  border-radius:4px;
+}
+
+

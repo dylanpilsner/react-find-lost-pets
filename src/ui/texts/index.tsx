@@ -9,4 +9,8 @@ function Paragraph({ children }) {
   return <p className={css.paragraph}>{children}</p>;
 }
 
-export { Title, Paragraph };
+function ModalTitle({ children }) {
+  return <h1 className={css["modal-title"]}>{children}</h1>;
+}
+
+export { Title, Paragraph, ModalTitle };
