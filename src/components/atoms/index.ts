@@ -15,6 +15,10 @@ const userLocationState = atom({
   key: "userLocation",
   default: setDefaultLocationState(),
 });
+const modalStatusState = atom({
+  key: "modalStatus",
+  default: false,
+});
 
 const resultsState = selector({
   key: "searchResults",
@@ -30,10 +34,20 @@ const resultsState = selector({
   },
 });
 
+export function useModalStatus() {
+  const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
+
+  if (setModalStatus) {
+    setModalStatus(false);
+  } else {
+    setModalStatus(true);
+  }
+}
+
 export function useSearchResults() {
   const nearLostPets = useRecoilValue(resultsState);
 
   return nearLostPets;
 }
 
-export { userLocationState };
+export { userLocationState, modalStatusState };

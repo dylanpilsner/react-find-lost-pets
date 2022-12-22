@@ -3,24 +3,27 @@ import css from "./modal.css";
 import { TextField, TextAreaField } from "../text-field/index";
 import { SendReportButton } from "../buttons";
 import { ModalTitle } from "../texts";
+import { modalStatusState } from "../../components/atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-export function Modal(props: { isActive: boolean }) {
+export function Modal(props: { name: string }) {
   const reportInformationEl: any = useRef();
   const closeModelEl: any = useRef();
+  const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
 
   function closeModel(e) {
+    setModalStatus(false);
     reportInformationEl.current.classList.toggle(css["active"]);
   }
 
   useEffect(() => {
-    reportInformationEl.current.classList.toggle(css["active"]);
-  }, [props.isActive]);
+    if (modalStatus) {
+      reportInformationEl.current.classList.toggle(css["active"]);
+    }
+  }, [modalStatus]);
 
   return (
-    <div
-      ref={reportInformationEl}
-      className={[css["report-information"], css["active"]].join(" ")}
-    >
+    <div ref={reportInformationEl} className={css["report-information"]}>
       <div className={css["report-information-modal-card"]}>
         <div className={css["modal-head"]}>
           <img
@@ -33,7 +36,7 @@ export function Modal(props: { isActive: boolean }) {
         <div className={css["information-container"]}>
           <ModalTitle>
             Reportar info <br />
-            de test
+            de {props.name}
           </ModalTitle>
         </div>
         <form className={css["report-form"]}>
