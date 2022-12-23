@@ -3,26 +3,12 @@ import { useSearchResults } from "../atoms";
 import css from "./card-results.css";
 import { HomeCard } from "../../ui/cards";
 import { Modal } from "../../ui/modal";
-import { modalStatusState } from "../atoms";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
+import { selectedPetState } from "../atoms";
 
 function CardResults() {
-  const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
-  const [selectedPet, setSelectedPet] = useState({ name: "" });
-
-  function selectPet(newData) {
-    setSelectedPet({ name: newData });
-  }
-
   const nearLostPets = useSearchResults();
-
-  function test() {
-    if (!modalStatus) {
-      setModalStatus(true);
-    } else {
-      setModalStatus(false);
-    }
-  }
+  const selectedPet = useRecoilValue(selectedPetState);
 
   return (
     <div className="results">
@@ -34,12 +20,24 @@ function CardResults() {
                 name={i.name}
                 petLocation={i.point_of_reference}
                 pictureURL={i.pictureURL}
+                userId={i.userId}
               />
+              <div
+                onClick={() => {
+                  console.log(i);
+                }}
+              >
+                CLICK ME
+              </div>
             </div>
           );
         })}
       </div>
-      <Modal name={selectedPet.name} />
+      <Modal
+        name={selectedPet.name}
+        userId={selectedPet.userId}
+        pictureURL={selectedPet.pictureURL}
+      />
     </div>
   );
 }

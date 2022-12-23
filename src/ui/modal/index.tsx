@@ -3,17 +3,40 @@ import css from "./modal.css";
 import { TextField, TextAreaField } from "../text-field/index";
 import { SendReportButton } from "../buttons";
 import { ModalTitle } from "../texts";
-import { modalStatusState } from "../../components/atoms";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  modalStatusState,
+  selectedPetState,
+  useTest,
+} from "../../components/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sendLastSeenReport } from "../../lib/api";
 
-export function Modal(props: { name: string }) {
+export function Modal(props: {
+  name: string;
+  userId: number;
+  pictureURL: string;
+}) {
   const reportInformationEl: any = useRef();
   const closeModelEl: any = useRef();
   const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
+  const selectedPet = useRecoilValue(selectedPetState);
 
   function closeModel(e) {
     setModalStatus(false);
     reportInformationEl.current.classList.toggle(css["active"]);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const target = e.target;
+    sendLastSeenReport(
+      target.phone.value,
+      target.description.value,
+      target.name.value,
+      1,
+      props.pictureURL
+    );
+    console.log("hola");
   }
 
   useEffect(() => {
@@ -39,7 +62,7 @@ export function Modal(props: { name: string }) {
             de {props.name}
           </ModalTitle>
         </div>
-        <form className={css["report-form"]}>
+        <form className={css["report-form"]} onSubmit={handleSubmit}>
           <TextField text="TU NOMBRE" name="name" />
           <TextField text="TU TELÉFONO" name="phone" />
           <TextAreaField text="DÓNDE LO VISTE?" name="description" />

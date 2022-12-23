@@ -1,4 +1,4 @@
-import { pullNearLostPets } from "../../lib/api";
+import { pullNearLostPets, sendLastSeenReport } from "../../lib/api";
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 
@@ -20,6 +20,15 @@ const modalStatusState = atom({
   default: false,
 });
 
+const selectedPetState = atom({
+  key: "selectedPet",
+  default: {
+    name: "",
+    userId: 0,
+    pictureURL: "",
+  },
+});
+
 const resultsState = selector({
   key: "searchResults",
   get: async ({ get }) => {
@@ -34,14 +43,20 @@ const resultsState = selector({
   },
 });
 
-export function useModalStatus() {
-  const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
+const reportedPetState = selector({
+  key: "reportPet",
+  get: async ({ get }) => {
+    const selectedPet = get(selectedPetState);
 
-  if (setModalStatus) {
-    setModalStatus(false);
-  } else {
-    setModalStatus(true);
-  }
+    const sendedReport = await sendLastSeenReport(1, "1", "1", 1, "123");
+    return sendedReport;
+  },
+});
+
+export function useTest() {
+  const test = useRecoilValue(reportedPetState);
+
+  return test;
 }
 
 export function useSearchResults() {
@@ -50,4 +65,4 @@ export function useSearchResults() {
   return nearLostPets;
 }
 
-export { userLocationState, modalStatusState };
+export { userLocationState, modalStatusState, selectedPetState };

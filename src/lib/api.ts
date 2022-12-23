@@ -1,5 +1,7 @@
-const API_BASE_URL = "https://find-lost-pets.onrender.com";
-// const API_BASE_URL = "http://localhost:3000";
+// const API_BASE_URL = "https://find-lost-pets.onrender.com";
+const API_BASE_URL = "http://localhost:3000";
+import { selectedPetState } from "../components/atoms";
+import { useRecoilValue } from "recoil";
 
 async function pullNearLostPets(lat: number, lng: number) {
   const res = await fetch(
@@ -10,4 +12,30 @@ async function pullNearLostPets(lat: number, lng: number) {
   return data;
 }
 
-export { pullNearLostPets };
+async function sendLastSeenReport(
+  phone: number,
+  description: string,
+  senderName: string,
+  userId: number,
+  petImage: string
+) {
+  const res = await fetch(`${API_BASE_URL}/report-last-seen`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      phone,
+      description,
+      senderName,
+      userId,
+      petImage,
+    }),
+  });
+  const data = await res.json();
+  console.log(data);
+
+  return data;
+}
+
+export { pullNearLostPets, sendLastSeenReport };

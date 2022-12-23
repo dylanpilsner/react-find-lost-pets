@@ -1,7 +1,6 @@
 import React from "react";
 import { Title, Paragraph } from "../../ui/texts";
 import { LocationButton } from "../../ui/buttons";
-import { HomeCard } from "../../ui/cards";
 import { CardResults } from "../../components/card-results";
 
 import css from "./home.css";

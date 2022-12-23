@@ -1,14 +1,25 @@
 import React from "react";
 import css from "./cards.css";
-import { modalStatusState } from "../../components/atoms";
+import { modalStatusState, selectedPetState } from "../../components/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 function HomeCard(petData: {
   name: string;
   petLocation: string;
   pictureURL: string;
+  userId: number;
 }) {
   const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
+  const [selectedPet, setSelectedPet] = useRecoilState(selectedPetState);
+
+  function selectPet() {
+    setSelectedPet({
+      name: petData.name,
+      userId: petData.userId,
+      pictureURL: petData.pictureURL,
+    });
+    console.log(selectedPet);
+  }
 
   function toggleModal() {
     if (!modalStatus) {
@@ -29,7 +40,10 @@ function HomeCard(petData: {
           <div className={css["report-information-container"]}>
             <span
               className={css["report-information-link"]}
-              onClick={toggleModal}
+              onClick={() => {
+                toggleModal();
+                selectPet();
+              }}
             >
               REPORTAR <br />
               INFORMACIÓN
