@@ -33,10 +33,10 @@ export function Modal(props: {
       target.phone.value,
       target.description.value,
       target.name.value,
-      1,
+      props.userId,
       props.pictureURL
     );
-    console.log("hola");
+    target.reset();
   }
 
   useEffect(() => {

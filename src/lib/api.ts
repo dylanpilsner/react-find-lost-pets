@@ -1,5 +1,5 @@
-// const API_BASE_URL = "https://find-lost-pets.onrender.com";
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://find-lost-pets.onrender.com";
+// const API_BASE_URL = "http://localhost:3000";
 import { selectedPetState } from "../components/atoms";
 import { useRecoilValue } from "recoil";
 
@@ -33,7 +33,6 @@ async function sendLastSeenReport(
     }),
   });
   const data = await res.json();
-  console.log(data);
 
   return data;
 }
