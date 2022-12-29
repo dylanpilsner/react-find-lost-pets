@@ -55,20 +55,18 @@ export function EditProfileTextField(props: {
   name: string;
   type: string;
   editable: boolean;
+  onEdit?: () => any;
 }) {
   const profileData = useProfileData();
   const inputEl: any = useRef();
 
-  function toggleReadOnly(e) {
-    inputEl.current.toggleAttribute("readOnly");
-    if (props.name == "password") {
-      inputEl.current.value = "";
-    }
+  function handleClick() {
+    props.onEdit();
   }
 
   const editableEl = props.editable ? (
     <img
-      onClick={toggleReadOnly}
+      onClick={handleClick}
       className={css["edit"]}
       src="./src/assets/edit.png"
     />

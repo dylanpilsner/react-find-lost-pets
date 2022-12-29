@@ -2,7 +2,14 @@ import React, { useRef, useState } from "react";
 import css from "./forms.css";
 import { EditProfileTextField, MainTextField } from "../../ui/text-field";
 import { FormButton } from "../../ui/buttons";
-import { recoverPassword, signIn, signUp, verifyEmail } from "../../lib/api";
+import {
+  recoverPassword,
+  signIn,
+  signUp,
+  updateName,
+  updatePassword,
+  verifyEmail,
+} from "../../lib/api";
 import { userDataState, redirectState, useProfileData } from "../atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -164,19 +171,81 @@ function RecoverPasswordForm() {
 }
 
 function ProfileForm() {
-  function test() {
-    const test2 = this.querySelector(".edit-container");
-    console.log(test2);
+  const formEl: any = useRef();
+  const [status, setStatus] = useState({ message: null, type: null });
+  const userData = useRecoilValue(userDataState);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = formEl.current;
+
+    if (!form.name.hasAttribute("readonly")) {
+      await updateName(form.name.value, userData.token);
+      location.reload();
+    }
+
+    if (!form.password.hasAttribute("readonly")) {
+      if (form["password"].value != form["confirm-password"].value) {
+        setStatus({ message: "Las contraseñas no coinciden", type: "error" });
+        form["password"].toggleAttribute("readonly");
+        form["confirm-password"].toggleAttribute("readonly");
+        return false;
+      }
+    }
+
+    if (!form.password.hasAttribute("readonly")) {
+      const apiResponse = await updatePassword(
+        form.password.value,
+        userData.token
+      );
+
+      if (!apiResponse.changeStatus) {
+        setStatus({
+          message:
+            "Por favor, introduzca una contraseña distinta a la anterior",
+          type: "error",
+        });
+        form["password"].toggleAttribute("readonly");
+        form["confirm-password"].toggleAttribute("readonly");
+        return false;
+      }
+      if (apiResponse.changeStatus) {
+        setStatus({
+          message: "Contraseña actualizada con éxito",
+          type: "success",
+        });
+      }
+    }
+  }
+
+  function onEditName() {
+    const form = formEl.current;
+    const editPassword = form["password"].hasAttribute("readonly");
+    if (editPassword) {
+      form["name"].toggleAttribute("readonly");
+    }
+  }
+
+  function onEditPassword() {
+    const form = formEl.current;
+    const editName = form["name"].hasAttribute("readonly");
+    if (editName) {
+      form["password"].value = "";
+      form["confirm-password"].value = "";
+
+      form["password"].toggleAttribute("readonly");
+      form["confirm-password"].toggleAttribute("readonly");
+    }
   }
 
   return (
-    <form className={css["form"]}>
-      <div onClick={test}>CLICKEAMEEEE</div>
+    <form ref={formEl} className={css["form"]} onSubmit={handleSubmit}>
       <EditProfileTextField
         editable={true}
         text="Nombre"
         name="name"
         type="text"
+        onEdit={onEditName}
       />
       <div className={css["separator"]}></div>
       <EditProfileTextField
@@ -184,15 +253,17 @@ function ProfileForm() {
         text="Contraseña"
         name="password"
         type="password"
+        onEdit={onEditPassword}
       />
       <EditProfileTextField
         editable={false}
         text="Repetir contraseña"
-        name="password"
+        name="confirm-password"
         type="password"
       />
-
-      <span className="password-alert"></span>
+      <span className={[css["status-message"], css[status.type]].join(" ")}>
+        {status.message}
+      </span>
       <FormButton>Guardar</FormButton>
     </form>
   );

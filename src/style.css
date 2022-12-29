@@ -1,11 +1,9 @@
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
-  margin:0;
+body {
+  margin: 0;
   font-family: Poppins;
-  background-image: url('./assets/pet-background.jpg');
-
+  background-image: url("./assets/pet-background.jpg");
 }
-

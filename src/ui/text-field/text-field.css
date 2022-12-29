@@ -63,4 +63,9 @@
   font-family: Poppins;
   font-size: 20px;
   margin-bottom: 30px;
+  text-align: center;
+}
+
+.edit-profile-form-input:read-only {
+  background-color: #d6d5da;
 }

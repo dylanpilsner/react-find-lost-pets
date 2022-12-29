@@ -1,5 +1,5 @@
-// const API_BASE_URL = "https://find-lost-pets.onrender.com";
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://find-lost-pets.onrender.com";
+// const API_BASE_URL = "http://localhost:3000";
 
 async function pullNearLostPets(lat: number, lng: number) {
   const res = await fetch(
@@ -94,6 +94,30 @@ async function pullProfile(token) {
   return data;
 }
 
+async function updateName(first_name: string, token: string) {
+  const res = await fetch(`${API_BASE_URL}/update-name`, {
+    method: "put",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ first_name }),
+  });
+}
+
+async function updatePassword(password: string, token: string) {
+  const res = await fetch(`${API_BASE_URL}/update-password`, {
+    method: "put",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ password }),
+  });
+  const data = await res.json();
+  return data;
+}
+
 export {
   pullNearLostPets,
   sendLastSeenReport,
@@ -102,4 +126,6 @@ export {
   recoverPassword,
   signUp,
   pullProfile,
+  updateName,
+  updatePassword,
 };
