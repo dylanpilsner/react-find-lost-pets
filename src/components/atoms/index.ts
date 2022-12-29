@@ -1,4 +1,4 @@
-import { pullNearLostPets, pullProfile } from "../../lib/api";
+import { getMyPets, pullNearLostPets, pullProfile } from "../../lib/api";
 import { atom, selector, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 
@@ -51,8 +51,8 @@ const redirectState = atom({
   default: setDefaultRedirect(),
 });
 
-const results = selector({
-  key: "searchResults",
+const nearLostPetsResults = selector({
+  key: "nearLostPetsResults",
   get: async ({ get }) => {
     const userLocation = get(userLocationState);
 
@@ -62,6 +62,16 @@ const results = selector({
     );
 
     return nearLostPets;
+  },
+});
+
+const myReportedPetsResults = selector({
+  key: "myReportedPetsResults",
+  get: async ({ get }) => {
+    const userData = get(userDataState);
+    const myReportedPets = await getMyPets(userData.token);
+
+    return myReportedPets;
   },
 });
 
@@ -82,10 +92,15 @@ export function useProfileData() {
   return pulledProfile;
 }
 
-export function useSearchResults() {
-  const nearLostPets = useRecoilValue(results);
+export function useNearLostPetsResults() {
+  const nearLostPets = useRecoilValue(nearLostPetsResults);
 
   return nearLostPets;
+}
+export function useGetMyPets() {
+  const myReportedPets = useRecoilValue(myReportedPetsResults);
+
+  return myReportedPets;
 }
 
 export {

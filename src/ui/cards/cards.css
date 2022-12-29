@@ -1,50 +1,114 @@
 .card {
-  height:234px;
-  width:335px;
-  border:2px solid black;
-  border-radius:4px;
-  background-color:#D1C1AD;
+  height: 234px;
+  width: 335px;
+  border: 2px solid black;
+  border-radius: 4px;
+  background-color: #d1c1ad;
 }
 
 .img-container {
-  height:147px;
-  width:100%;
-  border-bottom:3px solid black;
+  height: 147px;
+  width: 100%;
+  border-bottom: 3px solid black;
 }
 .pet-image {
-  height:100%;
-  width:100%;
-  object-fit:cover;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .pet-information {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  max-height: 65px;
 }
 
 .pet-name {
-  margin:0;
-  font-size:40px;
-  height:50px;
+  margin: 0;
+  font-size: 40px;
+  height: 50px;
 }
 .pet-location {
-  margin:0;
+  margin: 0;
 }
 
-.invisible-id{
-  display:none;
+.invisible-id {
+  display: none;
 }
 
 .report-information-link {
-  margin-right:5px;
+  margin-right: 5px;
   color: #5f83c7;
   cursor: pointer;
   text-decoration: underline;
-  font-weight:500;
+  font-weight: 500;
 }
 
-.report-information-link:hover{
-  color:#3E91DD;
+.report-information-link:hover {
+  color: #3e91dd;
+}
+
+.my-pets-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 10px;
+}
+
+.title {
+  margin: 20px 0;
+  font-size: 40px;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+}
+
+.lost-pet-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.lost-pet-card-container:last-child {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 769px) {
+  .lost-pet-card-container {
+    display: grid;
+    gap: 50px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1366px) {
+  .lost-pet-card-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.edit-information {
+  margin-right: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit {
+  height: 30px;
+  width: 30px;
+  align-self: end;
+  margin-top: 15px;
+}
+
+.status {
+  margin: 0;
 }

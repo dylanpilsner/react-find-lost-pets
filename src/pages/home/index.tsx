@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Title, Paragraph } from "../../ui/texts";
 import { LocationButton } from "../../ui/buttons";
-import { CardResults } from "../../components/card-results";
+import { HomeCardResults } from "../../components/card-results";
 import { Header } from "../../components/header";
 import { redirectState } from "../../components/atoms";
 import { useRecoilState } from "recoil";
@@ -29,7 +29,7 @@ function Home() {
           conocer tu ubicación.
         </Paragraph>
         <LocationButton>Dar mi ubicación</LocationButton>
-        <CardResults />
+        <HomeCardResults />
       </div>
     </div>
   );

@@ -118,6 +118,17 @@ async function updatePassword(password: string, token: string) {
   return data;
 }
 
+async function getMyPets(token: string) {
+  const res = await fetch(`${API_BASE_URL}/get-my-reported-pets`, {
+    headers: {
+      authorization: `bearer ${token}`,
+    },
+  });
+  const data = await res.json();
+
+  return data;
+}
+
 export {
   pullNearLostPets,
   sendLastSeenReport,
@@ -128,4 +139,5 @@ export {
   pullProfile,
   updateName,
   updatePassword,
+  getMyPets,
 };

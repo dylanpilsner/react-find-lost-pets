@@ -13,4 +13,8 @@ function ModalTitle({ children }) {
   return <h1 className={css["modal-title"]}>{children}</h1>;
 }
 
-export { Title, Paragraph, ModalTitle };
+function CenteredTitle({ children }) {
+  return <h1 className={css["centered-title"]}>{children}</h1>;
+}
+
+export { Title, Paragraph, ModalTitle, CenteredTitle };

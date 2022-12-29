@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useSearchResults } from "../atoms";
+import { useNearLostPetsResults, useGetMyPets } from "../atoms";
 import css from "./card-results.css";
-import { HomeCard } from "../../ui/cards";
+import { HomeCard, ReportedPetCard } from "../../ui/cards";
 import { Modal } from "../../ui/modal";
 import { useRecoilValue } from "recoil";
 import { selectedPetState } from "../atoms";
 
-function CardResults() {
-  const nearLostPets = useSearchResults();
+function HomeCardResults() {
+  const nearLostPets = useNearLostPetsResults();
   const selectedPet = useRecoilValue(selectedPetState);
   const noNearLostPets =
     nearLostPets.length == 0 ? (
@@ -42,4 +42,26 @@ function CardResults() {
   );
 }
 
-export { CardResults };
+function MyPetsCardResults() {
+  const myPetsCardResults = useGetMyPets();
+
+  return (
+    <div>
+      <div className={css["card-container"]}>
+        {myPetsCardResults.map((i) => {
+          return (
+            <div key={i.id}>
+              <ReportedPetCard
+                pictureURL={i.pictureURL}
+                name={i.name}
+                petLocation={i.point_of_reference}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export { HomeCardResults, MyPetsCardResults };

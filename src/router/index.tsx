@@ -5,6 +5,7 @@ import { RecoverPassword } from "../pages/recover-password";
 import { SignInPage } from "../pages/sign-in";
 import { SignUpPage } from "../pages/sign-up";
 import { ProfilePage } from "../pages/profile";
+import { ReportedPetsPage } from "../pages/reported-pets";
 
 function AppRoutes() {
   return (
@@ -14,6 +15,8 @@ function AppRoutes() {
       <Route path="/sign-up" element={<SignUpPage />}></Route>
       <Route path="/recover-password" element={<RecoverPassword />}></Route>
       <Route path="/profile" element={<ProfilePage />}></Route>
+      <Route path="/profile" element={<ProfilePage />}></Route>
+      <Route path="/my-reported-pets" element={<ReportedPetsPage />}></Route>
     </Routes>
   );
 }

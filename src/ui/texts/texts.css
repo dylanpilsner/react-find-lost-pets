@@ -9,6 +9,12 @@
   }
 }
 
+.centered-title {
+  font-size: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
 .paragraph {
   margin: 20px 0;
   text-align: center;
