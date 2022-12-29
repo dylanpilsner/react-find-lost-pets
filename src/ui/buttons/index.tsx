@@ -2,7 +2,6 @@ import React from "react";
 import css from "./buttons.css";
 import { userLocationState } from "../../components/atoms";
 import { useRecoilState } from "recoil";
-import { sendLastSeenReport } from "../../lib/api";
 
 function LocationButton({ children }) {
   const [userLoc, setUserLoc] = useRecoilState(userLocationState);
@@ -18,7 +17,6 @@ function LocationButton({ children }) {
         );
       }
     );
-    console.log(userLoc);
   };
 
   return (
@@ -30,7 +28,7 @@ function LocationButton({ children }) {
   );
 }
 
-function SendReportButton({ children }) {
+function FormButton({ children }) {
   return (
     <div className={css["button-container"]}>
       <button className={css["main-button"]}>{children}</button>
@@ -38,4 +36,4 @@ function SendReportButton({ children }) {
   );
 }
 
-export { LocationButton, SendReportButton };
+export { LocationButton, FormButton };

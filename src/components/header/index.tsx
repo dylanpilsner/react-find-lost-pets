@@ -1,10 +1,23 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { userDataState, redirectState } from "../atoms";
+import { useRecoilState } from "recoil";
 import css from "./header.css";
 
 function Header() {
-  const navigateHook = useNavigate();
+  const navigate = useNavigate();
   const navMenu: any = useRef();
+  const [userData, setUserData] = useRecoilState(userDataState);
+  const [redirect, setRedirect] = useRecoilState(redirectState);
+  const token = userData.token;
+
+  function getUser() {
+    if (userData.token) {
+      return userData.email;
+    }
+
+    return "Invitadx";
+  }
 
   function openNavMenu(e) {
     const hasClosedClass = navMenu.current
@@ -20,9 +33,45 @@ function Header() {
     navMenu.current.classList.toggle(css.closed);
   }
 
-  function navigate(path) {
-    navigateHook(path);
+  function signOut() {
+    localStorage.setItem(
+      "saved-user-data",
+      JSON.stringify({
+        email: null,
+        token: null,
+      })
+    );
+    location.reload();
   }
+
+  function setCustomRedirect(path) {
+    if (token) {
+      navigate(path);
+    } else {
+      setRedirect(path);
+      localStorage.setItem("saved-redirect", JSON.stringify(path));
+      navigate("/sign-up");
+      if (location.pathname == "/sign-up") {
+        location.reload();
+      }
+    }
+  }
+
+  const signIn = !userData.token ? (
+    <div className={css.sign} onClick={() => navigate("/sign-in")}>
+      INICIAR SESIÓN
+    </div>
+  ) : (
+    <div className={css.sign} onClick={() => signOut()}>
+      CERRAR SESIÓN
+    </div>
+  );
+
+  const signUp = !userData.token ? (
+    <div className={css.sign} onClick={() => navigate("/sign-up")}>
+      REGISTRARSE
+    </div>
+  ) : null;
 
   return (
     <header className={css.header}>
@@ -42,26 +91,30 @@ function Header() {
           src="./src/assets/close.png"
           onClick={closeNavMenu}
         />
-        <nav className={css["nav-item"]} onClick={() => navigate("/test")}>
+        <nav
+          className={css["nav-item"]}
+          onClick={() => setCustomRedirect("/profile")}
+        >
           Mis datos
         </nav>
         <nav
           className={css["nav-item"]}
-          onClick={() => navigate("my-reported-pets")}
+          onClick={() => setCustomRedirect("/my-reported-pets")}
         >
           Mis mascotas reportadas
         </nav>
         <nav
           className={css["nav-item"]}
-          onClick={() => navigate("/report-pet")}
+          onClick={() => setCustomRedirect("/report-pet")}
         >
           Reportar mascota
         </nav>
         <div className={css["account-container"]}>
           <img className={css["user-img"]} src="./src/assets/user.png" />
-          <span className={css.user}>Invitadx</span>
+          <span className={css.user}>{getUser()}</span>
         </div>
-        <div className={css.sign}>INICIAR SESIÓN</div>
+        {signIn}
+        {signUp}
       </nav>
     </header>
   );

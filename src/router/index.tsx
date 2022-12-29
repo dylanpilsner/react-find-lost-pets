@@ -1,14 +1,19 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Layout } from "../components/layout";
 import { Home } from "../pages/home";
+import { RecoverPassword } from "../pages/recover-password";
+import { SignInPage } from "../pages/sign-in";
+import { SignUpPage } from "../pages/sign-up";
+import { ProfilePage } from "../pages/profile";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />}></Route>
-      </Route>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="/sign-in" element={<SignInPage />}></Route>
+      <Route path="/sign-up" element={<SignUpPage />}></Route>
+      <Route path="/recover-password" element={<RecoverPassword />}></Route>
+      <Route path="/profile" element={<ProfilePage />}></Route>
     </Routes>
   );
 }

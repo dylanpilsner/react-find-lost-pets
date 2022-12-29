@@ -1,7 +1,5 @@
-const API_BASE_URL = "https://find-lost-pets.onrender.com";
-// const API_BASE_URL = "http://localhost:3000";
-import { selectedPetState } from "../components/atoms";
-import { useRecoilValue } from "recoil";
+// const API_BASE_URL = "https://find-lost-pets.onrender.com";
+const API_BASE_URL = "http://localhost:3000";
 
 async function pullNearLostPets(lat: number, lng: number) {
   const res = await fetch(
@@ -37,4 +35,71 @@ async function sendLastSeenReport(
   return data;
 }
 
-export { pullNearLostPets, sendLastSeenReport };
+async function verifyEmail(email: string) {
+  const res = await fetch(`${API_BASE_URL}/verify-user`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await res.json();
+
+  return data.verifiedEmail;
+}
+
+async function signIn(email: string, password: string) {
+  const res = await fetch(`${API_BASE_URL}/user/token`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+
+  return data;
+}
+
+async function recoverPassword(email: string) {
+  const res = await fetch(`${API_BASE_URL}/recover-password`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+}
+
+async function signUp(email: string, first_name: string, password: string) {
+  const res = await fetch(`${API_BASE_URL}/user`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ email, first_name, password }),
+  });
+  const data = await res.json();
+}
+
+async function pullProfile(token) {
+  const res = await fetch(`${API_BASE_URL}/profile`, {
+    headers: {
+      authorization: `bearer ${token}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+}
+
+export {
+  pullNearLostPets,
+  sendLastSeenReport,
+  verifyEmail,
+  signIn,
+  recoverPassword,
+  signUp,
+  pullProfile,
+};

@@ -18,7 +18,6 @@ function HomeCard(petData: {
       userId: petData.userId,
       pictureURL: petData.pictureURL,
     });
-    console.log(selectedPet);
   }
 
   function toggleModal() {

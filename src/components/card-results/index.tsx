@@ -9,9 +9,16 @@ import { selectedPetState } from "../atoms";
 function CardResults() {
   const nearLostPets = useSearchResults();
   const selectedPet = useRecoilValue(selectedPetState);
+  const noNearLostPets =
+    nearLostPets.length == 0 ? (
+      <h3 style={{ textAlign: "center" }}>
+        No hay mascotas perdidas cerca de tu ubicación
+      </h3>
+    ) : null;
 
   return (
     <div className="results">
+      {noNearLostPets}
       <div className={css["card-container"]}>
         {nearLostPets.map((i) => {
           return (
@@ -22,13 +29,6 @@ function CardResults() {
                 pictureURL={i.pictureURL}
                 userId={i.userId}
               />
-              <div
-                onClick={() => {
-                  console.log(i);
-                }}
-              >
-                CLICK ME
-              </div>
             </div>
           );
         })}

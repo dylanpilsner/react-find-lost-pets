@@ -1,13 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import css from "./modal.css";
-import { TextField, TextAreaField } from "../text-field/index";
-import { SendReportButton } from "../buttons";
+import { ModalTextField, ModalTextAreaField } from "../text-field/index";
+import { FormButton } from "../buttons";
 import { ModalTitle } from "../texts";
-import {
-  modalStatusState,
-  selectedPetState,
-  useTest,
-} from "../../components/atoms";
+import { modalStatusState, selectedPetState } from "../../components/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sendLastSeenReport } from "../../lib/api";
 
@@ -18,12 +14,14 @@ export function Modal(props: {
 }) {
   const reportInformationEl: any = useRef();
   const closeModelEl: any = useRef();
+  const formEl: any = useRef();
   const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
   const selectedPet = useRecoilValue(selectedPetState);
 
   function closeModel(e) {
     setModalStatus(false);
     reportInformationEl.current.classList.toggle(css["active"]);
+    formEl.current.reset();
   }
 
   async function handleSubmit(e) {
@@ -62,13 +60,17 @@ export function Modal(props: {
             de {props.name}
           </ModalTitle>
         </div>
-        <form className={css["report-form"]} onSubmit={handleSubmit}>
-          <TextField text="TU NOMBRE" name="name" />
-          <TextField text="TU TELÉFONO" name="phone" />
-          <TextAreaField text="DÓNDE LO VISTE?" name="description" />
+        <form
+          ref={formEl}
+          className={css["report-form"]}
+          onSubmit={handleSubmit}
+        >
+          <ModalTextField type="text" text="TU NOMBRE" name="name" />
+          <ModalTextField type="text" text="TU TELÉFONO" name="phone" />
+          <ModalTextAreaField text="DÓNDE LO VISTE?" name="description" />
           <span className={css["status-message}"]}></span>
           <div className={css["button-container"]}>
-            <SendReportButton>Enviar</SendReportButton>
+            <FormButton>Enviar</FormButton>
           </div>
         </form>
         <div className={css["modal-foot"]}></div>
