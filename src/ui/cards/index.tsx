@@ -1,6 +1,10 @@
 import React from "react";
 import css from "./cards.css";
-import { modalStatusState, selectedPetState } from "../../components/atoms";
+import {
+  modalStatusState,
+  selectedPetState,
+  userDataState,
+} from "../../components/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
@@ -56,11 +60,27 @@ function HomeCard(petData: {
   );
 }
 
-function ReportedPetCard(petData: { pictureURL; name; petLocation }) {
+function ReportedPetCard(petData: {
+  pictureURL: string;
+  name: string;
+  petLocation: string;
+  status: string;
+}) {
   const navigate = useNavigate();
 
+  const statusEl =
+    petData.status == "lost" ? (
+      <span className={[css["status"], css["lost"], css["span"]].join(" ")}>
+        Perdido
+      </span>
+    ) : (
+      <span className={[css["status"], css["found"], css["span"]].join(" ")}>
+        Encontrado
+      </span>
+    );
+
   function handleClick() {
-    navigate("/edit-pet");
+    // navigate("/edit-pet");
   }
 
   return (
@@ -78,10 +98,7 @@ function ReportedPetCard(petData: { pictureURL; name; petLocation }) {
               onClick={handleClick}
               src="./src/assets/edit.png"
             />
-            <p className={css["status"]}>
-              Estado:
-              <span className={css["status"]}> Encontrado</span>
-            </p>
+            <p className={css["status"]}>Estado: {statusEl}</p>
           </div>
         </div>
       </div>

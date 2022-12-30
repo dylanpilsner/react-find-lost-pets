@@ -55,6 +55,7 @@ function MyPetsCardResults() {
                 pictureURL={i.pictureURL}
                 name={i.name}
                 petLocation={i.point_of_reference}
+                status={i.status}
               />
             </div>
           );

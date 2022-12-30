@@ -112,3 +112,10 @@
 .status {
   margin: 0;
 }
+
+.status.span.lost {
+  color: red;
+}
+.status.span.found {
+  color: green;
+}
