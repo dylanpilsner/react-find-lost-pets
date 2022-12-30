@@ -6,6 +6,8 @@ import { SignInPage } from "../pages/sign-in";
 import { SignUpPage } from "../pages/sign-up";
 import { ProfilePage } from "../pages/profile";
 import { ReportedPetsPage } from "../pages/reported-pets";
+import { EditPetPage } from "../pages/edit-pet";
+import { ReportPetPage } from "../pages/report-pet";
 
 function AppRoutes() {
   return (
@@ -17,6 +19,8 @@ function AppRoutes() {
       <Route path="/profile" element={<ProfilePage />}></Route>
       <Route path="/profile" element={<ProfilePage />}></Route>
       <Route path="/my-reported-pets" element={<ReportedPetsPage />}></Route>
+      <Route path="/report-pet" element={<ReportPetPage />}></Route>
+      <Route path="/edit-pet" element={<EditPetPage />}></Route>
     </Routes>
   );
 }

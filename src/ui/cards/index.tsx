@@ -1,10 +1,6 @@
 import React from "react";
 import css from "./cards.css";
-import {
-  modalStatusState,
-  selectedPetState,
-  userDataState,
-} from "../../components/atoms";
+import { modalStatusState, selectedPetState } from "../../components/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
@@ -80,7 +76,7 @@ function ReportedPetCard(petData: {
     );
 
   function handleClick() {
-    // navigate("/edit-pet");
+    navigate("/edit-pet");
   }
 
   return (
