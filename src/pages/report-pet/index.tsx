@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Header } from "../../components/header";
-import { DropZoneButton, FormButton, TertiaryButton } from "../../ui/buttons";
+import { FormButton, TertiaryButton } from "../../ui/buttons";
 import { MainTextField } from "../../ui/text-field";
 import { CenteredTitle } from "../../ui/texts";
 import { Map } from "../../ui/map";
+import { DropZoneButton } from "../../components/dropzone";
 import css from "./report-pet.css";
 
 export function ReportPetPage() {
