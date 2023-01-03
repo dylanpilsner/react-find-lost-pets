@@ -129,7 +129,9 @@ function DropZoneButton(props: {
   const imgEl: any = useRef();
   const [test, setTest] = useState([]);
 
-  useEffect(() => {
+  setTimeout(() => {
+    console.log(imgEl.current.children.length);
+
     if (imgEl.current.children.length == 0) {
       const myDropzone = new Dropzone(buttonEl.current, {
         url: "/falsa",
@@ -141,35 +143,24 @@ function DropZoneButton(props: {
 
       myDropzone.on("thumbnail", (file) => {
         const pic = file.dataURL;
-
-        setTest(imgEl.current.children);
+        setTest([...imgEl.current.children]);
       });
     }
+  }, 20);
 
-    console.log("hola");
+  console.log(test);
 
-    if (test.length > 0) {
-      test[0].children[1].remove();
-      test[0].children[4].remove();
-      test[0].children[3].remove();
-      test[0].classList.add(css["dz-image"]);
-      test[0].children[0].classList.add(css["dz-image"]);
-    }
+  if (test.length > 1) {
+    test[0].remove();
+  }
 
-    //   const details = document.querySelector(".dz-details");
-    //   const successMark = document.querySelector(".dz-success-mark");
-    //   const errorMark = document.querySelector(".dz-error-mark");
-    //   const dropzoneChilds = dropzone.childElementCount;
-    //   if (dropzoneChilds > 1) {
-    //     dropzone.firstChild.remove();
-    //   }
-    //   details.remove();
-    //   successMark.remove();
-    //   errorMark.remove();
-    // });
-  }, [test]);
-
-  useEffect(() => {});
+  if (test.length > 0) {
+    test[test.length - 1].children[1].remove();
+    test[test.length - 1].children[4].remove();
+    test[test.length - 1].children[3].remove();
+    test[test.length - 1].classList.add(css["dz-image"]);
+    test[test.length - 1].children[0].classList.add(css["dz-image"]);
+  }
 
   function handleClick(e) {
     e.preventDefault();
