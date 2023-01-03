@@ -1,30 +1,29 @@
 import React, { useEffect, useRef } from "react";
 import * as mapboxgl from "mapbox-gl";
 import { MAPBOX_TOKEN } from "../../lib/mapbox";
-
-function initMap(container) {}
+import css from "./map.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export function Map() {
-  const mapContainer = useRef();
-  const token =
-    "pk.eyJ1IjoiZHlsYW5kZXYiLCJhIjoiY2xiMDNtbHBnMWZxazN2bnBvczJ5MnU0MyJ9.amcslgDMLVFcS3PrmpPSMA";
-
+  const mapContainer: any = useRef();
   useEffect(() => {
-    mapboxgl.accessToken = token;
-    Object.defineProperty(mapboxgl, "accessToken", {
-      value: "YOUR_ACCESS_TOKEN_HERE",
-      // writable: true,
-      // enumerable: true,
-      configurable: true,
+    new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      accessToken: MAPBOX_TOKEN,
     });
-    // console.log(mapboxgl.accessToken);
+    const controlContainer = mapContainer.current.children[2];
 
-    // mapboxgl.accessToken = token;
-    // new mapboxgl.Map({
-    //   container: mapContainer.current,
-    //   style: "mapbox://styles/mapbox/streets-v11",
-    // });
+    controlContainer.remove();
   }, []);
 
-  return <div className="map" ref={mapContainer}></div>;
+  return (
+    <div className={css["container"]}>
+      <div
+        className={css["map"]}
+        ref={mapContainer}
+        style={{ width: "100%", height: "250px" }}
+      ></div>
+    </div>
+  );
 }

@@ -7,3 +7,18 @@ body {
   font-family: Poppins;
   background-image: url("./assets/pet-background.jpg");
 }
+
+::-webkit-scrollbar {
+  height: 1rem;
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(68, 70, 84);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #eee;
+  border-radius: 9999px;
+}

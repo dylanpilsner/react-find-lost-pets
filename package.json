@@ -25,12 +25,14 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "dotenv": "^16.0.3",
+    "dropzone": "^6.0.0-beta.2",
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^2.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
     "recoil": "^0.7.6",
-    "tsconfig-paths-webpack-plugin": "^4.0.0"
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
+    "url": "^0.11.0"
   }
 }

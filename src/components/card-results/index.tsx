@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { useNearLostPetsResults, useGetMyPets } from "../atoms";
+import {
+  useNearLostPetsResults,
+  useGetMyPets,
+  userLocationState,
+} from "../atoms";
 import css from "./card-results.css";
 import { HomeCard, ReportedPetCard } from "../../ui/cards";
 import { Modal } from "../../ui/modal";
@@ -8,13 +12,18 @@ import { selectedPetState } from "../atoms";
 
 function HomeCardResults() {
   const nearLostPets = useNearLostPetsResults();
+  const location = useRecoilValue(userLocationState);
   const selectedPet = useRecoilValue(selectedPetState);
   const noNearLostPets =
-    nearLostPets.length == 0 ? (
+    nearLostPets.length == 0 &&
+    location.geolocation.lat != 0 &&
+    location.geolocation.lng != 0 ? (
       <h3 style={{ textAlign: "center" }}>
         No hay mascotas perdidas cerca de tu ubicación
       </h3>
     ) : null;
+
+  console.log(location.geolocation.lng);
 
   return (
     <div className="results">

@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { AppRoutes } from "./router";
 import { MainLoader } from "./ui/loader";
-
 const rootEl = document.getElementById("root");
 const root = createRoot(rootEl);
 
