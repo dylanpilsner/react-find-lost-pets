@@ -4,10 +4,7 @@ import css from "./dropzone.css";
 import { useRecoilState } from "recoil";
 import { petPicState } from "../atoms";
 
-export function DropZoneButton(props: {
-  children: string;
-  imgContainer: ReactElement;
-}) {
+export function DropZoneButton(props: { children: string }) {
   const buttonEl = useRef();
   const imgEl: any = useRef();
   const [imgElChildren, setImgElChildren] = useState([]);
@@ -49,19 +46,27 @@ export function DropZoneButton(props: {
     e.preventDefault();
   }
 
+  function handleKeyDown(e) {
+    if (e.keyCode == 13) {
+      e.stopPropagation();
+    }
+  }
+
   return (
     <div className={css["dropzone-container"]}>
       <div className={css["img-container"]}>
         <div ref={imgEl} className={css["img"]}></div>
       </div>
       <div className={css["button-container"]}>
-        <button
-          onClick={handleClick}
-          ref={buttonEl}
+        <div
           className={[css["button"], css["secondary"]].join(" ")}
+          onKeyDown={handleKeyDown}
+          onClick={handleClick}
         >
-          {props.children}
-        </button>
+          <h1 ref={buttonEl} className={css["button-text"]}>
+            {props.children}
+          </h1>
+        </div>
       </div>
     </div>
   );

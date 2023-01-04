@@ -11,7 +11,6 @@ import { petPicState } from "../../components/atoms";
 import css from "./report-pet.css";
 
 export function ReportPetPage() {
-  const imgContainer = useRef();
   const navigate = useNavigate();
   const petPic = useRecoilValue(petPicState);
 
@@ -32,12 +31,8 @@ export function ReportPetPage() {
         <CenteredTitle>Reportar mascota perdida</CenteredTitle>
         <form className={css["form"]} onSubmit={handleSubmit}>
           <MainTextField text="NOMBRE" name="name" type="text" />
-
-          <DropZoneButton imgContainer={imgContainer.current}>
-            Agregar/modificar foto
-          </DropZoneButton>
+          <DropZoneButton>Agregar/modificar foto</DropZoneButton>
           <Map />
-
           <p className={css["instructions"]}>
             Buscá un punto de referencia para reportar a tu mascota. Puede ser
             una dirección, un barrio o una ciudad.

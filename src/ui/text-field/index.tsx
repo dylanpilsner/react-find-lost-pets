@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
-import { useProfileData } from "../../components/atoms";
+import { useRecoilState } from "recoil";
+import { petLastLocationState, useProfileData } from "../../components/atoms";
+import * as mapboxgl from "mapbox-gl";
 import css from "./text-field.css";
+import { MAPBOX_TOKEN } from "../../lib/mapbox";
 
 export function ModalTextField(props: {
   text: string;
@@ -36,22 +39,11 @@ export function MainTextField(props: {
   text: string;
   name: string;
   type: string;
-  onSearchLocation?;
 }) {
-  function handleOnKeyUp(e) {
-    if (props.onSearchLocation) {
-      e.preventDefault();
-      if (e.keyCode == 13) {
-        props.onSearchLocation(e.target.value);
-      }
-    }
-  }
-
   return (
     <label className={css["main-form-label"]}>
       <div className={css["field-label"]}>{props.text}</div>
       <input
-        onKeyUp={handleOnKeyUp}
         type={props.type}
         className={css["main-form-input"]}
         name={props.name}
@@ -113,22 +105,36 @@ export function SearchLocationTextField(props: {
   text: string;
   name: string;
   type: string;
-  onSearchLocation?;
+  onSearchLocation;
 }) {
-  function handleOnKeyUp(e) {
-    if (props.onSearchLocation) {
-      e.preventDefault();
-      if (e.keyCode == 13) {
-        props.onSearchLocation(e.target.value);
-      }
-    }
-  }
+  const [lastLocationPet, setLastLocationPet] =
+    useRecoilState(petLastLocationState);
+
+  // function handleOnKeyUp(e) {
+  //   e.preventDefault();
+  //   setTimeout(() => {
+  //     if (e.keyCode == 13) {
+  //       console.log("hola");
+
+  //       props.onSearchLocation(function (results) {
+  //         const firstResult = results[0];
+  //         const [lng, lat] = firstResult.geometry.coordinates;
+  //         setLastLocationPet({ lat, lng });
+  //         const marker = new mapboxgl.Marker()
+  //           .setLngLat(firstResult.geometry.coordinates)
+  //           .addTo();
+  //         props.map.setCenter(firstResult.geometry.coordinates);
+  //         props.map.setZoom(17);
+  //       }, e.target.value);
+  //     }
+  //   }, 2000);
+  // }
 
   return (
     <label className={css["main-form-label"]}>
       <div className={css["field-label"]}>{props.text}</div>
       <input
-        onKeyUp={handleOnKeyUp}
+        // onKeyUp={handleOnKeyUp}
         type={props.type}
         className={css["main-form-input"]}
         name={props.name}

@@ -3,26 +3,28 @@ import * as mapboxgl from "mapbox-gl";
 import { MAPBOX_TOKEN } from "../../lib/mapbox";
 import css from "./map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MainTextField } from "../../ui/text-field";
+import { MainTextField, SearchLocationTextField } from "../../ui/text-field";
 import { mapboxClient } from "../../lib/mapbox";
+import { useRecoilState } from "recoil";
 
 export function Map() {
   const mapContainer: any = useRef();
 
   useEffect(() => {
-    new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
       accessToken: MAPBOX_TOKEN,
     });
     const controlContainer = mapContainer.current.children[2];
-
-    controlContainer.remove();
+    // controlContainer.remove();
   }, []);
 
-  function onSearchLocation(target, callback) {
+  function onSearchLocation(callback, target) {
+    console.log("hola");
+
     mapboxClient.geocodeForward(
-      target.value,
+      target,
       {
         country: "ar",
         autocomplete: true,
@@ -43,11 +45,12 @@ export function Map() {
           style={{ width: "100%", height: "250px" }}
         ></div>
       </div>
-      <MainTextField
+      <SearchLocationTextField
         onSearchLocation={onSearchLocation}
         text="UBICACIÓN"
         name="ubication"
         type="text"
+        // map={test}
       />
     </div>
   );
