@@ -129,6 +129,32 @@ async function getMyPets(token: string) {
   return data;
 }
 
+async function reportLostPet(params: {
+  name: string;
+  last_location_lat: number;
+  last_location_lng: number;
+  point_of_reference: string;
+  pictureURL: string;
+  token: string;
+}) {
+  const res = await fetch(`${API_BASE_URL}/report-lost-pet`, {
+    method: "post",
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${params.token}`,
+    },
+    body: JSON.stringify({
+      name: params.name,
+      point_of_reference: params.point_of_reference,
+      last_location_lat: params.last_location_lat,
+      last_location_lng: params.last_location_lng,
+      pictureURL: params.pictureURL,
+    }),
+  });
+  const data = await res.json();
+  return data;
+}
+
 export {
   pullNearLostPets,
   sendLastSeenReport,
@@ -140,4 +166,5 @@ export {
   updateName,
   updatePassword,
   getMyPets,
+  reportLostPet,
 };

@@ -3,15 +3,26 @@ import { Header } from "../../components/header";
 import { FormButton, TertiaryButton } from "../../ui/buttons";
 import { MainTextField } from "../../ui/text-field";
 import { CenteredTitle } from "../../ui/texts";
-import { Map } from "../../ui/map";
+import { Map } from "../../components/map";
 import { DropZoneButton } from "../../components/dropzone";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { petPicState } from "../../components/atoms";
 import css from "./report-pet.css";
 
 export function ReportPetPage() {
   const imgContainer = useRef();
+  const navigate = useNavigate();
+  const petPic = useRecoilValue(petPicState);
+
+  console.log(petPic);
 
   function handleSubmit(e) {
     e.preventDefault();
+  }
+
+  function goHome() {
+    navigate("/");
   }
 
   return (
@@ -22,14 +33,10 @@ export function ReportPetPage() {
         <form className={css["form"]} onSubmit={handleSubmit}>
           <MainTextField text="NOMBRE" name="name" type="text" />
 
-          {/* <div className={css["img-container"]}>
-            <div ref={imgContainer} className={css["img"]}></div>
-          </div> */}
           <DropZoneButton imgContainer={imgContainer.current}>
             Agregar/modificar foto
           </DropZoneButton>
           <Map />
-          <MainTextField text="UBICACIÓN" name="ubication" type="text" />
 
           <p className={css["instructions"]}>
             Buscá un punto de referencia para reportar a tu mascota. Puede ser
@@ -37,8 +44,7 @@ export function ReportPetPage() {
           </p>
           <span className={css["status-message"]}></span>
           <FormButton>Guardar</FormButton>
-          <TertiaryButton>Cancelar</TertiaryButton>
-          {/* <SecondaryButton>Ir a la home</SecondaryButton> */}
+          <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
         </form>
       </div>
     </div>

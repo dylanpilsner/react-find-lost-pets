@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import Dropzone from "dropzone";
 import css from "./dropzone.css";
+import { useRecoilState } from "recoil";
+import { petPicState } from "../atoms";
 
 export function DropZoneButton(props: {
   children: string;
@@ -8,7 +10,8 @@ export function DropZoneButton(props: {
 }) {
   const buttonEl = useRef();
   const imgEl: any = useRef();
-  const [test, setTest] = useState([]);
+  const [imgElChildren, setImgElChildren] = useState([]);
+  const [petPic, setPetPic] = useRecoilState(petPicState);
 
   useEffect(() => {
     if (imgEl.current.children.length == 0) {
@@ -21,23 +24,26 @@ export function DropZoneButton(props: {
       });
 
       myDropzone.on("thumbnail", (file) => {
-        const pic = file.dataURL;
-        setTest([...imgEl.current.children]);
+        setPetPic(file.dataURL);
+
+        setImgElChildren([...imgEl.current.children]);
       });
     }
 
-    if (test.length > 1) {
-      test[0].remove();
+    if (imgElChildren.length > 1) {
+      imgElChildren[0].remove();
     }
 
-    if (test.length > 0) {
-      test[test.length - 1].children[1].remove();
-      test[test.length - 1].children[4].remove();
-      test[test.length - 1].children[3].remove();
-      test[test.length - 1].classList.add(css["dz-image"]);
-      test[test.length - 1].children[0].classList.add(css["dz-image"]);
+    if (imgElChildren.length > 0) {
+      imgElChildren[imgElChildren.length - 1].children[1].remove();
+      imgElChildren[imgElChildren.length - 1].children[4].remove();
+      imgElChildren[imgElChildren.length - 1].children[3].remove();
+      imgElChildren[imgElChildren.length - 1].classList.add(css["dz-image"]);
+      imgElChildren[imgElChildren.length - 1].children[0].classList.add(
+        css["dz-image"]
+      );
     }
-  }, [test]);
+  }, [imgElChildren]);
 
   function handleClick(e) {
     e.preventDefault();

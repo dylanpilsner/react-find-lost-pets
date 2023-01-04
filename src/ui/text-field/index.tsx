@@ -36,11 +36,22 @@ export function MainTextField(props: {
   text: string;
   name: string;
   type: string;
+  onSearchLocation?;
 }) {
+  function handleOnKeyUp(e) {
+    if (props.onSearchLocation) {
+      e.preventDefault();
+      if (e.keyCode == 13) {
+        props.onSearchLocation(e.target.value);
+      }
+    }
+  }
+
   return (
     <label className={css["main-form-label"]}>
       <div className={css["field-label"]}>{props.text}</div>
       <input
+        onKeyUp={handleOnKeyUp}
         type={props.type}
         className={css["main-form-input"]}
         name={props.name}
@@ -93,6 +104,35 @@ export function EditProfileTextField(props: {
         name={props.name}
         required
         readOnly
+      />
+    </label>
+  );
+}
+
+export function SearchLocationTextField(props: {
+  text: string;
+  name: string;
+  type: string;
+  onSearchLocation?;
+}) {
+  function handleOnKeyUp(e) {
+    if (props.onSearchLocation) {
+      e.preventDefault();
+      if (e.keyCode == 13) {
+        props.onSearchLocation(e.target.value);
+      }
+    }
+  }
+
+  return (
+    <label className={css["main-form-label"]}>
+      <div className={css["field-label"]}>{props.text}</div>
+      <input
+        onKeyUp={handleOnKeyUp}
+        type={props.type}
+        className={css["main-form-input"]}
+        name={props.name}
+        required
       />
     </label>
   );

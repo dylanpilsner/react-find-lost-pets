@@ -1,6 +1,5 @@
 import { getMyPets, pullNearLostPets, pullProfile } from "../../lib/api";
 import { atom, selector, useRecoilValue } from "recoil";
-import { useEffect } from "react";
 
 function setDefaultLocationState() {
   const userLocation = JSON.parse(localStorage.getItem("saved-location"));
@@ -49,6 +48,19 @@ const userDataState = atom({
 const redirectState = atom({
   key: "redirect",
   default: setDefaultRedirect(),
+});
+
+const petPicState = atom({
+  key: "petPic",
+  default: null,
+});
+
+const petLastLocationState = atom({
+  key: "petLastLocation",
+  default: {
+    lng: null,
+    lat: null,
+  },
 });
 
 const nearLostPetsResults = selector({
@@ -109,4 +121,6 @@ export {
   selectedPetState,
   userDataState,
   redirectState,
+  petPicState,
+  petLastLocationState,
 };

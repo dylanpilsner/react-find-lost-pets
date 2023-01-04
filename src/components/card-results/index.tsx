@@ -23,8 +23,6 @@ function HomeCardResults() {
       </h3>
     ) : null;
 
-  console.log(location.geolocation.lng);
-
   return (
     <div className="results">
       {noNearLostPets}

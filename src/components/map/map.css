@@ -1,0 +1,13 @@
+.container {
+  width: 100%;
+}
+
+.map-container {
+  border: 2.5px solid black;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.map {
+  margin-bottom: 1px;
+}
