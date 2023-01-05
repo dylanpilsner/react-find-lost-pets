@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { petLastLocationState, useProfileData } from "../../components/atoms";
 import * as mapboxgl from "mapbox-gl";
@@ -124,20 +124,17 @@ export function SearchLocationTextField(props: {
   type: string;
   onSearchLocation;
 }) {
-  const [lastLocationPet, setLastLocationPet] =
-    useRecoilState(petLastLocationState);
-
   function handleSubmit(e) {
-    e.preventDefault();
+    // e.preventDefault();
     console.log("hola");
   }
 
   function handleOnKeyUp(e) {
     if (e.keyCode == 13) {
       e.preventDefault();
-      console.log("test");
+
+      props.onSearchLocation(e.target.value);
     }
-    console.log("hola");
   }
 
   return (
@@ -148,7 +145,6 @@ export function SearchLocationTextField(props: {
         onSubmit={handleSubmit}
         type={props.type}
         className={[css["main-form-input"], "test"].join(" ")}
-        name={props.name}
       />
     </label>
   );
