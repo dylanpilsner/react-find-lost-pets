@@ -17,7 +17,7 @@ export function Map() {
       accessToken: MAPBOX_TOKEN,
     });
     const controlContainer = mapContainer.current.children[2];
-    // controlContainer.remove();
+    controlContainer.remove();
   }, []);
 
   function onSearchLocation(callback, target) {

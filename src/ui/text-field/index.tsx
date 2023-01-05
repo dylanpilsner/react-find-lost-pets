@@ -101,6 +101,23 @@ export function EditProfileTextField(props: {
   );
 }
 
+export function ReportPetTextField(props: {
+  text: string;
+  name: string;
+  type: string;
+}) {
+  return (
+    <label className={css["main-form-label"]}>
+      <div className={css["field-label"]}>{props.text}</div>
+      <input
+        type={props.type}
+        className={css["main-form-input"]}
+        name={props.name}
+      />
+    </label>
+  );
+}
+
 export function SearchLocationTextField(props: {
   text: string;
   name: string;
@@ -110,35 +127,28 @@ export function SearchLocationTextField(props: {
   const [lastLocationPet, setLastLocationPet] =
     useRecoilState(petLastLocationState);
 
-  // function handleOnKeyUp(e) {
-  //   e.preventDefault();
-  //   setTimeout(() => {
-  //     if (e.keyCode == 13) {
-  //       console.log("hola");
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("hola");
+  }
 
-  //       props.onSearchLocation(function (results) {
-  //         const firstResult = results[0];
-  //         const [lng, lat] = firstResult.geometry.coordinates;
-  //         setLastLocationPet({ lat, lng });
-  //         const marker = new mapboxgl.Marker()
-  //           .setLngLat(firstResult.geometry.coordinates)
-  //           .addTo();
-  //         props.map.setCenter(firstResult.geometry.coordinates);
-  //         props.map.setZoom(17);
-  //       }, e.target.value);
-  //     }
-  //   }, 2000);
-  // }
+  function handleOnKeyUp(e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      console.log("test");
+    }
+    console.log("hola");
+  }
 
   return (
     <label className={css["main-form-label"]}>
       <div className={css["field-label"]}>{props.text}</div>
       <input
-        // onKeyUp={handleOnKeyUp}
+        onKeyUp={handleOnKeyUp}
+        onSubmit={handleSubmit}
         type={props.type}
-        className={css["main-form-input"]}
+        className={[css["main-form-input"], "test"].join(" ")}
         name={props.name}
-        required
       />
     </label>
   );

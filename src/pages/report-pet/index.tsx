@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Header } from "../../components/header";
 import { FormButton, TertiaryButton } from "../../ui/buttons";
-import { MainTextField } from "../../ui/text-field";
+import { MainTextField, ReportPetTextField } from "../../ui/text-field";
 import { CenteredTitle } from "../../ui/texts";
 import { Map } from "../../components/map";
 import { DropZoneButton } from "../../components/dropzone";
@@ -13,8 +13,6 @@ import css from "./report-pet.css";
 export function ReportPetPage() {
   const navigate = useNavigate();
   const petPic = useRecoilValue(petPicState);
-
-  console.log(petPic);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,7 +28,7 @@ export function ReportPetPage() {
       <div className={css["report-pet-page-container"]}>
         <CenteredTitle>Reportar mascota perdida</CenteredTitle>
         <form className={css["form"]} onSubmit={handleSubmit}>
-          <MainTextField text="NOMBRE" name="name" type="text" />
+          <ReportPetTextField text="NOMBRE" name="name" type="text" />
           <DropZoneButton>Agregar/modificar foto</DropZoneButton>
           <Map />
           <p className={css["instructions"]}>
