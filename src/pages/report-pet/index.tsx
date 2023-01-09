@@ -7,15 +7,20 @@ import { Map } from "../../components/map";
 import { DropZoneButton } from "../../components/dropzone";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { petPicState } from "../../components/atoms";
+import { petLastLocationState, petPicState } from "../../components/atoms";
 import css from "./report-pet.css";
 
 export function ReportPetPage() {
   const navigate = useNavigate();
   const petPic = useRecoilValue(petPicState);
+  const petLastLocation = useRecoilValue(petLastLocationState);
 
   function handleSubmit(e) {
     e.preventDefault();
+    const target = e.target;
+    if (target.name.value && petPic && petLastLocation) {
+      console.log("Hola");
+    }
   }
 
   function goHome() {
