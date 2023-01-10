@@ -11,6 +11,7 @@ import { petLastLocationState } from "../atoms";
 export function Map() {
   const mapContainer: any = useRef();
   const mapRef: any = useRef();
+  const inputValue: any = useRef();
   const [lastLocationPet, setLastLocationPet] =
     useRecoilState(petLastLocationState);
 
@@ -36,18 +37,20 @@ export function Map() {
     mapRef.current.setZoom(17);
   }
 
-  function onSearchLocation(target) {
-    mapboxClient.geocodeForward(
-      target,
-      {
-        country: "ar",
-        autocomplete: true,
-        language: "es",
-      },
-      function (err, data, res) {
-        if (!err) setCoordinatesAndMarker(data.features);
-      }
-    );
+  function onSearchLocation(value) {
+    if (value) {
+      mapboxClient.geocodeForward(
+        value,
+        {
+          country: "ar",
+          autocomplete: true,
+          language: "es",
+        },
+        function (err, data, res) {
+          if (!err) setCoordinatesAndMarker(data.features);
+        }
+      );
+    }
   }
 
   return (

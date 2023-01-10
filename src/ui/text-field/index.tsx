@@ -124,11 +124,9 @@ export function SearchLocationTextField(props: {
   type: string;
   onSearchLocation;
 }) {
-  const test: any = useRef();
-
-  function handleOnKeyUp(e) {
+  function handleKeyDown(e) {
     if (e.keyCode == 13) {
-      test.current.blur();
+      e.preventDefault();
       props.onSearchLocation(e.target.value);
     }
   }
@@ -137,10 +135,9 @@ export function SearchLocationTextField(props: {
     <label className={css["main-form-label"]}>
       <div className={css["field-label"]}>{props.text}</div>
       <input
-        ref={test}
-        onKeyUp={handleOnKeyUp}
+        onKeyDown={handleKeyDown}
         type={props.type}
-        className={[css["main-form-input"], "test"].join(" ")}
+        className={css["main-form-input"]}
       />
     </label>
   );
