@@ -21,6 +21,23 @@ function setDefaultRedirect() {
 
   return defaultRedirect;
 }
+function setDefaultToEditPet() {
+  const toEditPet = JSON.parse(localStorage.getItem("saved-to-edit-pet"));
+  const defaultRedirect = toEditPet
+    ? toEditPet
+    : {
+        name: null,
+        pictureURL: null,
+        point_of_reference: null,
+        coordinates: {
+          lat: null,
+          lng: null,
+        },
+        status: null,
+      };
+
+  return defaultRedirect;
+}
 
 const userLocationState = atom({
   key: "userLocation",
@@ -38,6 +55,16 @@ const selectedPetState = atom({
     userId: 0,
     pictureURL: "",
   },
+});
+
+const toEditPetState = atom({
+  key: "toEditPet",
+  default: setDefaultToEditPet(),
+});
+
+const pointOfReferenceState = atom({
+  key: "pointOfReference",
+  default: null,
 });
 
 const userDataState = atom({
@@ -123,4 +150,6 @@ export {
   redirectState,
   petPicState,
   petLastLocationState,
+  pointOfReferenceState,
+  toEditPetState,
 };

@@ -1,17 +1,27 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Dropzone from "dropzone";
 import css from "./dropzone.css";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { petPicState } from "../atoms";
 
-export function DropZoneButton(props: { children: string }) {
+export function DropZoneButton(props: {
+  children: string;
+  defaultValue?: string;
+}) {
   const buttonEl = useRef();
   const imgEl: any = useRef();
   const [imgElChildren, setImgElChildren] = useState([]);
-  const [petPic, setPetPic] = useRecoilState(petPicState);
+  const setPetPic = useSetRecoilState(petPicState);
+
+  const defaultImg = props.defaultValue ? (
+    <img
+      className={[css["default-image"], "test"].join(" ")}
+      src={props.defaultValue}
+    />
+  ) : null;
 
   useEffect(() => {
-    if (imgEl.current.children.length == 0) {
+    if (imgEl.current.children.length < 2) {
       const myDropzone = new Dropzone(buttonEl.current, {
         url: "/falsa",
         autoProcessQueue: false,
@@ -55,7 +65,9 @@ export function DropZoneButton(props: { children: string }) {
   return (
     <div className={css["dropzone-container"]}>
       <div className={css["img-container"]}>
-        <div ref={imgEl} className={css["img"]}></div>
+        <div ref={imgEl} className={css["img"]}>
+          {defaultImg}
+        </div>
       </div>
       <div className={css["button-container"]}>
         <div

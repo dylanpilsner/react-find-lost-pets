@@ -1,8 +1,13 @@
 import React from "react";
 import css from "./cards.css";
-import { modalStatusState, selectedPetState } from "../../components/atoms";
-import { useRecoilState, useRecoilValue } from "recoil";
+
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
+import {
+  modalStatusState,
+  selectedPetState,
+  toEditPetState,
+} from "../../components/atoms";
 
 function HomeCard(petData: {
   name: string;
@@ -11,7 +16,7 @@ function HomeCard(petData: {
   userId: number;
 }) {
   const [modalStatus, setModalStatus] = useRecoilState(modalStatusState);
-  const [selectedPet, setSelectedPet] = useRecoilState(selectedPetState);
+  const setSelectedPet = useSetRecoilState(selectedPetState);
 
   function selectPet() {
     setSelectedPet({
@@ -61,8 +66,11 @@ function ReportedPetCard(petData: {
   name: string;
   petLocation: string;
   status: string;
+  lat: number;
+  lng: number;
 }) {
   const navigate = useNavigate();
+  const setToEditPet = useSetRecoilState(toEditPetState);
 
   const statusEl =
     petData.status == "lost" ? (
@@ -76,6 +84,25 @@ function ReportedPetCard(petData: {
     );
 
   function handleClick() {
+    setToEditPet({
+      name: petData.name,
+      point_of_reference: petData.petLocation,
+      pictureURL: petData.pictureURL,
+      coordinates: { lat: petData.lat, lng: petData.lng },
+      status: petData.status,
+    });
+
+    localStorage.setItem(
+      "saved-to-edit-pet",
+      JSON.stringify({
+        name: petData.name,
+        point_of_reference: petData.petLocation,
+        pictureURL: petData.pictureURL,
+        coordinates: { lat: petData.lat, lng: petData.lng },
+        status: petData.status,
+      })
+    );
+
     navigate("/edit-pet");
   }
 

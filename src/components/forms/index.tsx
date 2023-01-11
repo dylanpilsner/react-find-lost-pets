@@ -1,21 +1,36 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import css from "./forms.css";
-import { EditProfileTextField, MainTextField } from "../../ui/text-field";
-import { FormButton } from "../../ui/buttons";
+import {
+  EditProfileTextField,
+  MainTextField,
+  ReportPetTextField,
+} from "../../ui/text-field";
+import { FormButton, TertiaryButton } from "../../ui/buttons";
+import {
+  userDataState,
+  redirectState,
+  petPicState,
+  petLastLocationState,
+  pointOfReferenceState,
+  toEditPetState,
+} from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 import {
   recoverPassword,
+  reportLostPet,
   signIn,
   signUp,
   updateName,
   updatePassword,
   verifyEmail,
 } from "../../lib/api";
-import { userDataState, redirectState, useProfileData } from "../atoms";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { DropZoneButton } from "../dropzone";
+import { Map } from "../map";
+import { SecondaryLoader } from "../../ui/loader";
 
 function LoginForm() {
-  const [userData, setUserData] = useRecoilState(userDataState);
+  const setUserData = useSetRecoilState(userDataState);
   const redirect = useRecoilValue(redirectState);
   const [status, setStatus] = useState("");
   const navigate = useNavigate();
@@ -269,4 +284,169 @@ function ProfileForm() {
   );
 }
 
-export { LoginForm, SignUpForm, RecoverPasswordForm, ProfileForm };
+function ReportPetForm() {
+  const [status, setStatus] = useState({ message: null, type: null });
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
+  const petPic = useRecoilValue(petPicState);
+  const petLastLocation = useRecoilValue(petLastLocationState);
+  const pointOfReference = useRecoilValue(pointOfReferenceState);
+  const userData = useRecoilValue(userDataState);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const target = e.target;
+    const name = target.name.value;
+
+    if (name && petPic && petLastLocation) {
+      setLoader(true);
+      const newReport = await reportLostPet({
+        name,
+        last_location_lat: petLastLocation.lat,
+        last_location_lng: petLastLocation.lng,
+        point_of_reference: pointOfReference,
+        pictureURL: petPic,
+        token: userData.token,
+      });
+      setLoader(false);
+      setStatus({ message: "Mascota reportada con éxito!", type: "success" });
+    }
+
+    if (!petLastLocation.lng || !petLastLocation.lat) {
+      setStatus({
+        message:
+          "Por favor, informe dónde fue el último lugar en donde vió a su mascota. En caso de haberlo hecho, recuerde apretar la tecla 'Enter' en el campo de ubicación",
+        type: "error",
+      });
+    }
+    if (!petPic) {
+      setStatus({
+        message: "Por favor, ingrese una imagen de su mascota",
+        type: "error",
+      });
+    }
+
+    if (!name) {
+      setStatus({
+        message: "Por favor, introduzca el nombre de la mascota",
+        type: "error",
+      });
+    }
+  }
+
+  function goHome() {
+    navigate("/");
+  }
+
+  return (
+    <form className={css["form"]} onSubmit={handleSubmit}>
+      <ReportPetTextField text="NOMBRE" name="name" type="text" />
+      <DropZoneButton>Agregar/modificar foto</DropZoneButton>
+      <Map />
+      <p className={css["instructions"]}>
+        Buscá un punto de referencia para reportar a tu mascota y apriete la
+        tecla 'enter'. Puede ser una dirección, un barrio o una ciudad.
+      </p>
+      <span className={[css["status-message"], css[status.type]].join(" ")}>
+        {status.message}
+      </span>
+      <SecondaryLoader active={loader} />
+      <div className={css["button-separator"]}></div>
+      <FormButton>Guardar</FormButton>
+      <div className={css["button-separator"]}></div>
+      <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
+    </form>
+  );
+}
+function EditPetForm() {
+  const [status, setStatus] = useState({ message: null, type: null });
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
+  const petPic = useRecoilValue(petPicState);
+  const petLastLocation = useRecoilValue(petLastLocationState);
+  const pointOfReference = useRecoilValue(pointOfReferenceState);
+  const toEditPet = useRecoilValue(toEditPetState);
+  const userData = useRecoilValue(userDataState);
+  const formRef: any = useRef();
+
+  useEffect(() => {
+    formRef.current.name.value = toEditPet.name;
+    console.log(toEditPet);
+  }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const target = e.target;
+    const name = target.name.value;
+
+    if (name && petPic && petLastLocation) {
+      setLoader(true);
+      const newReport = await reportLostPet({
+        name,
+        last_location_lat: petLastLocation.lat,
+        last_location_lng: petLastLocation.lng,
+        point_of_reference: pointOfReference,
+        pictureURL: petPic,
+        token: userData.token,
+      });
+      setLoader(false);
+      setStatus({ message: "Mascota reportada con éxito!", type: "success" });
+    }
+
+    if (!petLastLocation.lng || !petLastLocation.lat) {
+      setStatus({
+        message:
+          "Por favor, informe dónde fue el último lugar en donde vió a su mascota. En caso de haberlo hecho, recuerde apretar la tecla 'Enter' en el campo de ubicación",
+        type: "error",
+      });
+    }
+    if (!petPic) {
+      setStatus({
+        message: "Por favor, ingrese una imagen de su mascota",
+        type: "error",
+      });
+    }
+
+    if (!name) {
+      setStatus({
+        message: "Por favor, introduzca el nombre de la mascota",
+        type: "error",
+      });
+    }
+  }
+
+  function goHome() {
+    navigate("/");
+  }
+
+  return (
+    <form ref={formRef} className={css["form"]} onSubmit={handleSubmit}>
+      <ReportPetTextField text="NOMBRE" name="name" type="text" />
+      <DropZoneButton defaultValue={toEditPet.pictureURL}>
+        Agregar/modificar foto
+      </DropZoneButton>
+      <Map />
+      <p className={css["instructions"]}>
+        Buscá un punto de referencia para reportar a tu mascota y apriete la
+        tecla 'enter'. Puede ser una dirección, un barrio o una ciudad.
+      </p>
+      <span className={[css["status-message"], css[status.type]].join(" ")}>
+        {status.message}
+      </span>
+      <SecondaryLoader active={loader} />
+      <div className={css["button-separator"]}></div>
+      <FormButton>Guardar</FormButton>
+      <div className={css["button-separator"]}></div>
+      <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
+    </form>
+  );
+}
+
+export {
+  LoginForm,
+  SignUpForm,
+  RecoverPasswordForm,
+  ProfileForm,
+  ReportPetForm,
+  EditPetForm,
+};

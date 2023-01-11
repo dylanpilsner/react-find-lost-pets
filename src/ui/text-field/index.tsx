@@ -1,6 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
-import { petLastLocationState, useProfileData } from "../../components/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  petLastLocationState,
+  pointOfReferenceState,
+  useProfileData,
+} from "../../components/atoms";
 import * as mapboxgl from "mapbox-gl";
 import css from "./text-field.css";
 import { MAPBOX_TOKEN } from "../../lib/mapbox";
@@ -124,9 +128,14 @@ export function SearchLocationTextField(props: {
   type: string;
   onSearchLocation;
 }) {
+  const [pointOfReference, setPointOfReference] = useRecoilState(
+    pointOfReferenceState
+  );
+
   function handleKeyDown(e) {
     if (e.keyCode == 13) {
       e.preventDefault();
+      setPointOfReference(e.target.value);
       props.onSearchLocation(e.target.value);
     }
   }
