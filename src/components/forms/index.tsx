@@ -17,6 +17,7 @@ import {
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import {
+  editPet,
   recoverPassword,
   reportLostPet,
   signIn,
@@ -362,17 +363,23 @@ function EditPetForm() {
   const [status, setStatus] = useState({ message: null, type: null });
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  const petPic = useRecoilValue(petPicState);
   const petLastLocation = useRecoilValue(petLastLocationState);
   const pointOfReference = useRecoilValue(pointOfReferenceState);
   const toEditPet = useRecoilValue(toEditPetState);
+  const recoilPetPic = useRecoilValue(petPicState);
+  const petPic = recoilPetPic ? recoilPetPic : toEditPet.pictureURL;
   const userData = useRecoilValue(userDataState);
   const formRef: any = useRef();
 
+  const lat = toEditPet.coordinates.lat;
+  const lng = toEditPet.coordinates.lng;
+
   useEffect(() => {
     formRef.current.name.value = toEditPet.name;
-    console.log(toEditPet);
   }, []);
+
+  console.log(toEditPet);
+  console.log(userData.token);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -381,12 +388,13 @@ function EditPetForm() {
 
     if (name && petPic && petLastLocation) {
       setLoader(true);
-      const newReport = await reportLostPet({
+      const editReport = await editPet({
         name,
-        last_location_lat: petLastLocation.lat,
-        last_location_lng: petLastLocation.lng,
+        lat: petLastLocation.lat,
+        lng: petLastLocation.lng,
         point_of_reference: pointOfReference,
         pictureURL: petPic,
+        petId: toEditPet.id,
         token: userData.token,
       });
       setLoader(false);
@@ -425,7 +433,7 @@ function EditPetForm() {
       <DropZoneButton defaultValue={toEditPet.pictureURL}>
         Agregar/modificar foto
       </DropZoneButton>
-      <Map />
+      <Map defaultValue={[lng, lat]} />
       <p className={css["instructions"]}>
         Buscá un punto de referencia para reportar a tu mascota y apriete la
         tecla 'enter'. Puede ser una dirección, un barrio o una ciudad.

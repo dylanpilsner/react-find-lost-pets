@@ -7,7 +7,7 @@ export function EditPetPage() {
   return (
     <div>
       <Header />
-      <div className={css["report-pet-page-container"]}>
+      <div className={css["edit-pet-page-container"]}>
         <EditPetForm />
       </div>
     </div>

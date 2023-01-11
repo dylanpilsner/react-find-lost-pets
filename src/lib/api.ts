@@ -1,5 +1,8 @@
-// const API_BASE_URL = "https://find-lost-pets.onrender.com";
-const API_BASE_URL = "http://localhost:3000";
+import { useRecoilValue } from "recoil";
+import { toEditPetState, userDataState } from "../components/atoms";
+
+const API_BASE_URL = "https://find-lost-pets.onrender.com";
+// const API_BASE_URL = "http://localhost:3000";
 
 async function pullNearLostPets(lat: number, lng: number) {
   const res = await fetch(
@@ -155,6 +158,33 @@ async function reportLostPet(params: {
   return data;
 }
 
+async function editPet(newData: {
+  name: string;
+  lat: number;
+  lng: number;
+  pictureURL: string;
+  point_of_reference: string;
+  petId: number;
+  token: string;
+}) {
+  const res = await fetch(`${API_BASE_URL}/pet/${newData.petId}`, {
+    method: "put",
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${newData.token}`,
+    },
+    body: JSON.stringify({
+      name: newData.name,
+      lat: newData.lat,
+      lng: newData.lng,
+      pictureURL: newData.pictureURL,
+      point_of_reference: newData.point_of_reference,
+    }),
+  });
+  const data = await res.json();
+  return data;
+}
+
 export {
   pullNearLostPets,
   sendLastSeenReport,
@@ -167,4 +197,5 @@ export {
   updatePassword,
   getMyPets,
   reportLostPet,
+  editPet,
 };

@@ -8,7 +8,7 @@ import { mapboxClient } from "../../lib/mapbox";
 import { useRecoilState } from "recoil";
 import { petLastLocationState } from "../atoms";
 
-export function Map() {
+export function Map(props: { defaultValue? }) {
   const mapContainer: any = useRef();
   const mapRef: any = useRef();
   const inputValue: any = useRef();
@@ -22,6 +22,11 @@ export function Map() {
       accessToken: MAPBOX_TOKEN,
     });
     const controlContainer = mapContainer.current.children[2];
+    if (props.defaultValue) {
+      map.setCenter(props.defaultValue);
+      map.setZoom(17);
+    }
+
     controlContainer.remove();
     mapRef.current = map;
   }, []);

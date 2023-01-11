@@ -65,6 +65,7 @@ function MyPetsCardResults() {
                 status={i.status}
                 lat={i.last_location_lat}
                 lng={i.last_location_lng}
+                id={i.id}
               />
             </div>
           );

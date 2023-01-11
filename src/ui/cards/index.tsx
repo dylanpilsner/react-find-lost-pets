@@ -68,6 +68,7 @@ function ReportedPetCard(petData: {
   status: string;
   lat: number;
   lng: number;
+  id: number;
 }) {
   const navigate = useNavigate();
   const setToEditPet = useSetRecoilState(toEditPetState);
@@ -90,6 +91,7 @@ function ReportedPetCard(petData: {
       pictureURL: petData.pictureURL,
       coordinates: { lat: petData.lat, lng: petData.lng },
       status: petData.status,
+      id: petData.id,
     });
 
     localStorage.setItem(
@@ -100,6 +102,7 @@ function ReportedPetCard(petData: {
         pictureURL: petData.pictureURL,
         coordinates: { lat: petData.lat, lng: petData.lng },
         status: petData.status,
+        id: petData.id,
       })
     );
 

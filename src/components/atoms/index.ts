@@ -34,6 +34,7 @@ function setDefaultToEditPet() {
           lng: null,
         },
         status: null,
+        id: null,
       };
 
   return defaultRedirect;
