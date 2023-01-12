@@ -3,17 +3,15 @@ import * as mapboxgl from "mapbox-gl";
 import { MAPBOX_TOKEN } from "../../lib/mapbox";
 import css from "./map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MainTextField, SearchLocationTextField } from "../../ui/text-field";
+import { SearchLocationTextField } from "../../ui/text-field";
 import { mapboxClient } from "../../lib/mapbox";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { petLastLocationState } from "../atoms";
 
 export function Map(props: { defaultValue? }) {
   const mapContainer: any = useRef();
   const mapRef: any = useRef();
-  const inputValue: any = useRef();
-  const [lastLocationPet, setLastLocationPet] =
-    useRecoilState(petLastLocationState);
+  const setLastLocationPet = useSetRecoilState(petLastLocationState);
 
   useEffect(() => {
     const map = new mapboxgl.Map({

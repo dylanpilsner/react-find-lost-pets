@@ -1,10 +1,10 @@
 import React from "react";
 import css from "./buttons.css";
 import { userLocationState } from "../../components/atoms";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 function LocationButton({ children }) {
-  const [userLoc, setUserLoc] = useRecoilState(userLocationState);
+  const setUserLoc = useSetRecoilState(userLocationState);
   const handleClick = () => {
     const geolocation = navigator.geolocation.getCurrentPosition(
       (geoposition) => {
@@ -68,7 +68,7 @@ function SecondaryButton(props: { children: string; action? }) {
   return (
     <div className={css["button-container"]}>
       <button
-        className={[css["button"], css["secondary"]].join(" ")}
+        className={[css["button"], css["second"]].join(" ")}
         onClick={handleClick}
       >
         {props.children}
@@ -86,10 +86,32 @@ function TertiaryButton(props: { children: string; action? }) {
   return (
     <div className={css["button-container"]}>
       <button
-        className={[css["button"], css["tertiary"]].join(" ")}
+        className={[css["button"], css["third"]].join(" ")}
         onClick={handleClick}
       >
         {props.children}
+      </button>
+    </div>
+  );
+}
+function StatusButton(props: { action: () => void; petStatus: petStatus }) {
+  function handleClick(e) {
+    e.preventDefault();
+    props.action();
+  }
+
+  const backgroundColor = props.petStatus === "lost" ? "#ADBDD1" : "#FF4949";
+
+  return (
+    <div className={css["button-container"]}>
+      <button
+        className={css["button"]}
+        onClick={handleClick}
+        style={{ backgroundColor }}
+      >
+        {props.petStatus === "lost"
+          ? "Reportar como encontrado"
+          : "Reportar como perdido"}
       </button>
     </div>
   );
@@ -104,7 +126,7 @@ function GoHomeButton(props: { children: string; action? }) {
   return (
     <div className={css["button-container"]}>
       <button
-        className={[css["button"], css["secondary"]].join(" ")}
+        className={[css["button"], css["second"]].join(" ")}
         onClick={handleClick}
       >
         {props.children}
@@ -120,4 +142,5 @@ export {
   SecondaryButton,
   TertiaryButton,
   GoHomeButton,
+  StatusButton,
 };

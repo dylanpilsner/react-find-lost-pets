@@ -4,15 +4,12 @@ import { LocationButton } from "../../ui/buttons";
 import { HomeCardResults } from "../../components/card-results";
 import { Header } from "../../components/header";
 import { redirectState } from "../../components/atoms";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import css from "./home.css";
-import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const navigate = useNavigate();
-
-  const [redirect, setRedirect] = useRecoilState(redirectState);
+  const setRedirect = useSetRecoilState(redirectState);
   useEffect(() => {
     setRedirect("/");
   }, []);

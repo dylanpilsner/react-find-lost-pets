@@ -1,13 +1,7 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  petLastLocationState,
-  pointOfReferenceState,
-  useProfileData,
-} from "../../components/atoms";
-import * as mapboxgl from "mapbox-gl";
+import React, { useRef } from "react";
+import { useSetRecoilState } from "recoil";
+import { pointOfReferenceState, useProfileData } from "../../components/atoms";
 import css from "./text-field.css";
-import { MAPBOX_TOKEN } from "../../lib/mapbox";
 
 export function ModalTextField(props: {
   text: string;
@@ -128,9 +122,7 @@ export function SearchLocationTextField(props: {
   type: string;
   onSearchLocation;
 }) {
-  const [pointOfReference, setPointOfReference] = useRecoilState(
-    pointOfReferenceState
-  );
+  const setPointOfReference = useSetRecoilState(pointOfReferenceState);
 
   function handleKeyDown(e) {
     if (e.keyCode == 13) {

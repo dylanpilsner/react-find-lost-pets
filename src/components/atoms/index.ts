@@ -99,7 +99,7 @@ const refetchState = atom({
 const nearLostPetsResults = selector({
   key: "nearLostPetsResults",
   get: async ({ get }) => {
-    const refetch = get(refetchState);
+    get(refetchState);
     const userLocation = get(userLocationState);
 
     const nearLostPets = await pullNearLostPets(
@@ -114,7 +114,7 @@ const nearLostPetsResults = selector({
 const myReportedPetsResults = selector({
   key: "myReportedPetsResults",
   get: async ({ get }) => {
-    const refetch = get(refetchState);
+    get(refetchState);
 
     const userData = get(userDataState);
     const myReportedPets = await getMyPets(userData.token);

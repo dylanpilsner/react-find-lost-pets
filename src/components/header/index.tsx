@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { userDataState, redirectState } from "../atoms";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import css from "./header.css";
 
 function Header() {
   const navigate = useNavigate();
   const navMenu: any = useRef();
-  const [userData, setUserData] = useRecoilState(userDataState);
-  const [redirect, setRedirect] = useRecoilState(redirectState);
+  const userData = useRecoilValue(userDataState);
+  const setRedirect = useSetRecoilState(redirectState);
   const token = userData.token;
 
   function getUser() {

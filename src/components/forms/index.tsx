@@ -5,7 +5,12 @@ import {
   MainTextField,
   ReportPetTextField,
 } from "../../ui/text-field";
-import { FormButton, TertiaryButton, GoHomeButton } from "../../ui/buttons";
+import {
+  FormButton,
+  TertiaryButton,
+  GoHomeButton,
+  StatusButton,
+} from "../../ui/buttons";
 import {
   userDataState,
   redirectState,
@@ -26,6 +31,7 @@ import {
   signUp,
   updateName,
   updatePassword,
+  updateStatus,
   verifyEmail,
 } from "../../lib/api";
 import { DropZoneButton } from "../dropzone";
@@ -36,6 +42,7 @@ function LoginForm() {
   const setUserData = useSetRecoilState(userDataState);
   const redirect = useRecoilValue(redirectState);
   const [status, setStatus] = useState("");
+  const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -43,16 +50,19 @@ function LoginForm() {
     const target = e.target;
     const email = target.email.value;
     const password = target.password.value;
+    setLoader(true);
     const apiResponse = await verifyEmail(email);
 
     if (!apiResponse) {
       setStatus("Este email no está registrado.");
+      setLoader(false);
       return false;
     }
 
     const authentication = await signIn(email, password);
     if (!authentication.token.authenticationCompleted) {
       setStatus("Contraseña incorrecta.");
+      setLoader(false);
       return false;
     }
 
@@ -60,6 +70,7 @@ function LoginForm() {
       email,
       token: authentication.token.token,
     });
+    setLoader(false);
 
     localStorage.setItem(
       "saved-user-data",
@@ -73,6 +84,7 @@ function LoginForm() {
     <form className={css["form"]} onSubmit={handleSubmit}>
       <MainTextField type="email" text="EMAIL" name="email" />
       <MainTextField type="password" text="CONTRASEÑA" name="password" />
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css["error"]].join(" ")}>
         {status}
       </span>
@@ -89,9 +101,10 @@ function LoginForm() {
 }
 
 function SignUpForm() {
-  const [userData, setUserData] = useRecoilState(userDataState);
+  const setUserData = useSetRecoilState(userDataState);
   const redirect = useRecoilValue(redirectState);
   const [status, setStatus] = useState("");
+  const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -101,21 +114,24 @@ function SignUpForm() {
     const name = target.name.value;
     const password = target.password.value;
     const repeatPassword = target["repeat-password"].value;
-
+    setLoader(true);
     const apiResponse = await verifyEmail(email);
 
     if (apiResponse) {
       setStatus("El email ya está registrado.");
+      setLoader(false);
       return false;
     }
 
     if (password != repeatPassword) {
       setStatus("Las contraseñas no coinciden.");
+      setLoader(false);
       return false;
     }
 
     await signUp(email, name, password);
     const authentication = await signIn(email, password);
+    setLoader(false);
 
     setUserData({
       email,
@@ -141,6 +157,7 @@ function SignUpForm() {
         text="REPETIR CONTRASEÑA"
         name="repeat-password"
       />
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css["error"]].join(" ")}>
         {status}
       </span>
@@ -157,29 +174,32 @@ function SignUpForm() {
 }
 function RecoverPasswordForm() {
   const [status, setStatus] = useState({ message: "", type: "" });
+  const [loader, setLoader] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     const target = e.target;
     const email = target.email.value;
+    setLoader(true);
     const apiResponse = await verifyEmail(email);
-
     if (!apiResponse) {
       setStatus({ message: "Este email no está registrado.", type: "error" });
+      setLoader(false);
       return false;
     }
-
     await recoverPassword(email);
     setStatus({
       message:
         "Recibirás un email con tu nueva contraseña para poder ingresar a tu cuenta.",
       type: "success",
     });
+    setLoader(false);
   }
 
   return (
     <form className={css["form"]} onSubmit={handleSubmit}>
       <MainTextField type="email" text="EMAIL" name="email" />
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css[status.type]].join(" ")}>
         {status.message}
       </span>
@@ -191,6 +211,7 @@ function RecoverPasswordForm() {
 function ProfileForm() {
   const formEl: any = useRef();
   const [status, setStatus] = useState({ message: null, type: null });
+  const [loader, setLoader] = useState(false);
   const userData = useRecoilValue(userDataState);
 
   async function handleSubmit(e) {
@@ -198,6 +219,7 @@ function ProfileForm() {
     const form = formEl.current;
 
     if (!form.name.hasAttribute("readonly")) {
+      setLoader(true);
       await updateName(form.name.value, userData.token);
       location.reload();
     }
@@ -212,12 +234,14 @@ function ProfileForm() {
     }
 
     if (!form.password.hasAttribute("readonly")) {
+      setLoader(true);
       const apiResponse = await updatePassword(
         form.password.value,
         userData.token
       );
 
       if (!apiResponse.changeStatus) {
+        setLoader(false);
         setStatus({
           message:
             "Por favor, introduzca una contraseña distinta a la anterior",
@@ -228,6 +252,7 @@ function ProfileForm() {
         return false;
       }
       if (apiResponse.changeStatus) {
+        setLoader(false);
         setStatus({
           message: "Contraseña actualizada con éxito",
           type: "success",
@@ -279,6 +304,7 @@ function ProfileForm() {
         name="confirm-password"
         type="password"
       />
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css[status.type]].join(" ")}>
         {status.message}
       </span>
@@ -320,7 +346,7 @@ function ReportPetForm() {
 
     if (name && petPic && petLastLocation) {
       setLoader(true);
-      const newReport = await reportLostPet({
+      await reportLostPet({
         name,
         last_location_lat: petLastLocation.lat,
         last_location_lng: petLastLocation.lng,
@@ -369,10 +395,10 @@ function ReportPetForm() {
         Buscá un punto de referencia para reportar a tu mascota y apriete la
         tecla 'enter'. Puede ser una dirección, un barrio o una ciudad.
       </p>
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css[status.type]].join(" ")}>
         {status.message}
       </span>
-      <SecondaryLoader active={loader} />
       {formButtons}
     </form>
   );
@@ -381,6 +407,7 @@ function EditPetForm() {
   const [status, setStatus] = useState({ message: null, type: null });
   const [loader, setLoader] = useState(false);
   const [refetch, setRefetch] = useRecoilState(refetchState);
+  const [reportStatus, setReportStatus] = useState(false);
   const navigate = useNavigate();
   const petLastLocation = useRecoilValue(petLastLocationState);
   const pointOfReference = useRecoilValue(pointOfReferenceState);
@@ -397,11 +424,22 @@ function EditPetForm() {
   const lng = toEditPet.coordinates.lng;
 
   useEffect(() => {
-    console.log(toEditPet);
-
     const ubication = formRef.current.children[2].children[1].children[1];
     formRef.current.name.value = toEditPet.name;
     ubication.value = toEditPet.point_of_reference;
+  }, []);
+
+  const formButtons = reportStatus ? (
+    <GoHomeButton action={goHome}>Ir a la home</GoHomeButton>
+  ) : (
+    <div className={css["button-container"]}>
+      <FormButton>Guardar</FormButton>
+      <StatusButton action={changeStatus} petStatus={toEditPet.status} />
+    </div>
+  );
+
+  useEffect(() => {
+    setReportStatus(false);
   }, []);
 
   async function handleSubmit(e) {
@@ -416,7 +454,7 @@ function EditPetForm() {
 
     if (name && petPic && petLastLocation && ubication.value) {
       setLoader(true);
-      const editReport = await editPet({
+      await editPet({
         name,
         lat: defaultPetLastLocation.lat,
         lng: defaultPetLastLocation.lng,
@@ -430,7 +468,7 @@ function EditPetForm() {
 
       setLoader(false);
       setStatus({ message: "Mascota reportada con éxito!", type: "success" });
-      return;
+      setReportStatus(true);
     }
 
     if (!ubication.value) {
@@ -456,6 +494,7 @@ function EditPetForm() {
   }
 
   async function handleClick() {
+    setLoader(true);
     await deletePost(toEditPet.id, userData.token);
     setRefetch(refetch + 1);
     navigate("/my-reported-pets");
@@ -463,6 +502,19 @@ function EditPetForm() {
 
   function goHome() {
     navigate("/");
+  }
+
+  async function changeStatus() {
+    const statusToUpdate = toEditPet.status === "lost" ? "found" : "lost";
+    setLoader(true);
+    await updateStatus(statusToUpdate, toEditPet.id, userData.token);
+    setLoader(false);
+    setStatus({
+      message: "El estado de tu mascota fue actualizado!",
+      type: "success",
+    });
+    setReportStatus(true);
+    setRefetch(refetch + 1);
   }
 
   return (
@@ -476,15 +528,11 @@ function EditPetForm() {
         Buscá un punto de referencia para reportar a tu mascota y apriete la
         tecla 'enter'. Puede ser una dirección, un barrio o una ciudad.
       </p>
+      <SecondaryLoader active={loader} />
       <span className={[css["status-message"], css[status.type]].join(" ")}>
         {status.message}
       </span>
-      <SecondaryLoader active={loader} />
-      <div className={css["button-separator"]}></div>
-      <FormButton>Guardar</FormButton>
-      <div className={css["button-separator"]}></div>
-      <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
-
+      {formButtons}
       <span onClick={handleClick} className={css["unpublish"]}>
         DESPUBLICAR
       </span>

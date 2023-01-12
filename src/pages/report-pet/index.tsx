@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { Header } from "../../components/header";
-import { FormButton, TertiaryButton } from "../../ui/buttons";
-import { ReportPetTextField } from "../../ui/text-field";
 import { CenteredTitle } from "../../ui/texts";
 
 import css from "./report-pet.css";
