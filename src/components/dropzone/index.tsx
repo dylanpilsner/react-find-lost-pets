@@ -21,7 +21,28 @@ export function DropZoneButton(props: {
   ) : null;
 
   useEffect(() => {
-    if (imgEl.current.children.length < 2) {
+    // Funciona para la page report-pet, ya que no tiene una etiqueta img dentro del contenedor. Hace que Dropzone no se monte cada vez que subo una imagen y que arroje error
+    if (
+      imgEl.current.children.length < 1 &&
+      location.pathname == "/report-pet"
+    ) {
+      const myDropzone = new Dropzone(buttonEl.current, {
+        url: "/falsa",
+        autoProcessQueue: false,
+        thumbnailWidth: 350,
+        thumbnailHeight: 145,
+        previewsContainer: imgEl.current,
+      });
+
+      myDropzone.on("thumbnail", (file) => {
+        setPetPic(file.dataURL);
+
+        setImgElChildren([...imgEl.current.children]);
+      });
+    }
+
+    // Funciona para la page edit-pet, al subir una nueva foto, remueve la etiqueta img y Dropzone no vuelve a cargarse nunca más dentro del contenedor, evitando que arroje errores.
+    if (imgEl.current.children.length < 2 && location.pathname == "/edit-pet") {
       const myDropzone = new Dropzone(buttonEl.current, {
         url: "/falsa",
         autoProcessQueue: false,

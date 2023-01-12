@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useNearLostPetsResults,
   useGetMyPets,
@@ -51,6 +51,11 @@ function HomeCardResults() {
 
 function MyPetsCardResults() {
   const myPetsCardResults = useGetMyPets();
+
+  useEffect(() => {
+    // cualquier código que quieres ejecutar cuando myPetsCardResults cambie
+    console.log(myPetsCardResults);
+  }, [myPetsCardResults]);
 
   return (
     <div>

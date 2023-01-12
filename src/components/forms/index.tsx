@@ -370,38 +370,50 @@ function EditPetForm() {
   const petPic = recoilPetPic ? recoilPetPic : toEditPet.pictureURL;
   const userData = useRecoilValue(userDataState);
   const formRef: any = useRef();
-
+  const defaultPetLastLocation =
+    petLastLocation.lat && petLastLocation.lng
+      ? petLastLocation
+      : toEditPet.coordinates;
   const lat = toEditPet.coordinates.lat;
   const lng = toEditPet.coordinates.lng;
 
   useEffect(() => {
-    formRef.current.name.value = toEditPet.name;
-  }, []);
+    console.log(toEditPet);
 
-  console.log(toEditPet);
-  console.log(userData.token);
+    const ubication = formRef.current.children[2].children[1].children[1];
+    formRef.current.name.value = toEditPet.name;
+    ubication.value = toEditPet.point_of_reference;
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
     const target = e.target;
     const name = target.name.value;
+    const ubication = formRef.current.children[2].children[1].children[1];
+    const defaultPointOfReference = pointOfReference
+      ? pointOfReference
+      : ubication.value;
 
-    if (name && petPic && petLastLocation) {
+    console.log(ubication.value);
+
+    if (name && petPic && petLastLocation && ubication.value) {
       setLoader(true);
       const editReport = await editPet({
         name,
-        lat: petLastLocation.lat,
-        lng: petLastLocation.lng,
-        point_of_reference: pointOfReference,
+        lat: defaultPetLastLocation.lat,
+        lng: defaultPetLastLocation.lng,
+        point_of_reference: defaultPointOfReference.toUpperCase(),
         pictureURL: petPic,
         petId: toEditPet.id,
         token: userData.token,
       });
+
       setLoader(false);
       setStatus({ message: "Mascota reportada con éxito!", type: "success" });
+      return;
     }
 
-    if (!petLastLocation.lng || !petLastLocation.lat) {
+    if (!ubication.value) {
       setStatus({
         message:
           "Por favor, informe dónde fue el último lugar en donde vió a su mascota. En caso de haberlo hecho, recuerde apretar la tecla 'Enter' en el campo de ubicación",

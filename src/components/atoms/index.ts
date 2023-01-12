@@ -1,5 +1,13 @@
 import { getMyPets, pullNearLostPets, pullProfile } from "../../lib/api";
-import { atom, selector, useRecoilValue } from "recoil";
+import {
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
+import { useEffect } from "react";
 
 function setDefaultLocationState() {
   const userLocation = JSON.parse(localStorage.getItem("saved-location"));
