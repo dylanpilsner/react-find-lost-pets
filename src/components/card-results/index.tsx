@@ -52,11 +52,6 @@ function HomeCardResults() {
 function MyPetsCardResults() {
   const myPetsCardResults = useGetMyPets();
 
-  useEffect(() => {
-    // cualquier código que quieres ejecutar cuando myPetsCardResults cambie
-    console.log(myPetsCardResults);
-  }, [myPetsCardResults]);
-
   return (
     <div>
       <div className={css["card-container"]}>

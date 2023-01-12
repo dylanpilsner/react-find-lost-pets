@@ -5,7 +5,7 @@ import {
   MainTextField,
   ReportPetTextField,
 } from "../../ui/text-field";
-import { FormButton, TertiaryButton } from "../../ui/buttons";
+import { FormButton, TertiaryButton, GoHomeButton } from "../../ui/buttons";
 import {
   userDataState,
   redirectState,
@@ -13,10 +13,12 @@ import {
   petLastLocationState,
   pointOfReferenceState,
   toEditPetState,
+  refetchState,
 } from "../atoms";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import {
+  deletePost,
   editPet,
   recoverPassword,
   reportLostPet,
@@ -293,6 +295,23 @@ function ReportPetForm() {
   const petLastLocation = useRecoilValue(petLastLocationState);
   const pointOfReference = useRecoilValue(pointOfReferenceState);
   const userData = useRecoilValue(userDataState);
+  const [refetch, setRefetch] = useRecoilState(refetchState);
+  const [reportStatus, setReportStatus] = useState(false);
+
+  const formButtons = reportStatus ? (
+    <GoHomeButton action={goHome}>Ir a la home</GoHomeButton>
+  ) : (
+    <div className={css["button-container"]}>
+      <FormButton>Guardar</FormButton>
+      <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
+    </div>
+  );
+
+  useEffect(() => {
+    if (reportStatus) {
+      setReportStatus(false);
+    }
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -305,10 +324,12 @@ function ReportPetForm() {
         name,
         last_location_lat: petLastLocation.lat,
         last_location_lng: petLastLocation.lng,
-        point_of_reference: pointOfReference,
+        point_of_reference: pointOfReference.toUpperCase(),
         pictureURL: petPic,
         token: userData.token,
       });
+      setRefetch(refetch + 1);
+      setReportStatus(true);
       setLoader(false);
       setStatus({ message: "Mascota reportada con éxito!", type: "success" });
     }
@@ -352,16 +373,14 @@ function ReportPetForm() {
         {status.message}
       </span>
       <SecondaryLoader active={loader} />
-      <div className={css["button-separator"]}></div>
-      <FormButton>Guardar</FormButton>
-      <div className={css["button-separator"]}></div>
-      <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
+      {formButtons}
     </form>
   );
 }
 function EditPetForm() {
   const [status, setStatus] = useState({ message: null, type: null });
   const [loader, setLoader] = useState(false);
+  const [refetch, setRefetch] = useRecoilState(refetchState);
   const navigate = useNavigate();
   const petLastLocation = useRecoilValue(petLastLocationState);
   const pointOfReference = useRecoilValue(pointOfReferenceState);
@@ -393,8 +412,7 @@ function EditPetForm() {
     const defaultPointOfReference = pointOfReference
       ? pointOfReference
       : ubication.value;
-
-    console.log(ubication.value);
+    const [refetch, setRefetch] = useRecoilState(refetchState);
 
     if (name && petPic && petLastLocation && ubication.value) {
       setLoader(true);
@@ -407,6 +425,8 @@ function EditPetForm() {
         petId: toEditPet.id,
         token: userData.token,
       });
+
+      setRefetch(refetch + 1);
 
       setLoader(false);
       setStatus({ message: "Mascota reportada con éxito!", type: "success" });
@@ -435,6 +455,12 @@ function EditPetForm() {
     }
   }
 
+  async function handleClick() {
+    await deletePost(toEditPet.id, userData.token);
+    setRefetch(refetch + 1);
+    navigate("/my-reported-pets");
+  }
+
   function goHome() {
     navigate("/");
   }
@@ -458,6 +484,10 @@ function EditPetForm() {
       <FormButton>Guardar</FormButton>
       <div className={css["button-separator"]}></div>
       <TertiaryButton action={goHome}>Cancelar</TertiaryButton>
+
+      <span onClick={handleClick} className={css["unpublish"]}>
+        DESPUBLICAR
+      </span>
     </form>
   );
 }

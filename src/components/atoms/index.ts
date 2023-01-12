@@ -1,13 +1,5 @@
 import { getMyPets, pullNearLostPets, pullProfile } from "../../lib/api";
-import {
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { useEffect } from "react";
+import { atom, selector, useRecoilValue } from "recoil";
 
 function setDefaultLocationState() {
   const userLocation = JSON.parse(localStorage.getItem("saved-location"));
@@ -99,9 +91,15 @@ const petLastLocationState = atom({
   },
 });
 
+const refetchState = atom({
+  key: "refetch",
+  default: 0,
+});
+
 const nearLostPetsResults = selector({
   key: "nearLostPetsResults",
   get: async ({ get }) => {
+    const refetch = get(refetchState);
     const userLocation = get(userLocationState);
 
     const nearLostPets = await pullNearLostPets(
@@ -116,6 +114,8 @@ const nearLostPetsResults = selector({
 const myReportedPetsResults = selector({
   key: "myReportedPetsResults",
   get: async ({ get }) => {
+    const refetch = get(refetchState);
+
     const userData = get(userDataState);
     const myReportedPets = await getMyPets(userData.token);
 
@@ -161,4 +161,5 @@ export {
   petLastLocationState,
   pointOfReferenceState,
   toEditPetState,
+  refetchState,
 };

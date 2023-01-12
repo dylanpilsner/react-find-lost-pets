@@ -4,16 +4,3 @@
   align-items: center;
   padding: 10px;
 }
-
-.unpublish {
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: underline;
-  cursor: pointer;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.unpublish:hover {
-  color: #ff3a3a;
-}
