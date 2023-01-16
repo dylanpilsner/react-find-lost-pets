@@ -12,6 +12,6 @@
  * [App](https://react-find-lost-pets.web.app/)
 ## Tech Stack
 
-**Frontend:** React, Recoil, TypeScript, Webpack, Bulma.css, Mapbox, Dropzone, Firebase (deploy).
+**Frontend:** React, Recoil, TypeScript, Webpack, Mapbox, Dropzone, Firebase (deploy).
 
 **Backend:** Node, Express, PostgreSQL, Render, Sequelize(ORM), MVC, Algolia
