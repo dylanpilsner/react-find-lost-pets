@@ -37,6 +37,7 @@ import {
 import { DropZoneButton } from "../dropzone";
 import { Map } from "../map";
 import { SecondaryLoader } from "../../ui/loader";
+import { log } from "console";
 
 function LoginForm() {
   const setUserData = useSetRecoilState(userDataState);
@@ -450,7 +451,6 @@ function EditPetForm() {
     const defaultPointOfReference = pointOfReference
       ? pointOfReference
       : ubication.value;
-    const [refetch, setRefetch] = useRecoilState(refetchState);
 
     if (name && petPic && petLastLocation && ubication.value) {
       setLoader(true);

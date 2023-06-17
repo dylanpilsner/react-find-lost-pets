@@ -82,7 +82,7 @@ export function Modal(props: {
           <ModalTextAreaField text="DÓNDE LO VISTE?" name="description" />
           <SecondaryLoader active={loader} />
           <span className={[css["status-message"], css[status.type]].join(" ")}>
-            {status.message}, {status.type}
+            {status.message} {status.type}
           </span>
           <div className={css["button-container"]}>
             <FormButton>Enviar</FormButton>
