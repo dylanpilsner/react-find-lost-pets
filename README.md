@@ -10,6 +10,9 @@
 
 ## Link a la app 👇
  * [App](https://react-find-lost-pets.web.app/)
+## Backend
+ * [Repositorio](https://react-find-lost-pets.web.app/)
+ * [Documentación](https://documenter.getpostman.com/view/19369798/2s8YzMYR9F)
 ## Tech Stack
 
 **Frontend:** React, Recoil, TypeScript, Webpack, Mapbox, Dropzone, Firebase (deploy).
